@@ -33,7 +33,7 @@ const createChatWidget = (config) => {
     chatWindow.style.flex = "1";
     chatWindow.style.overflowY = "scroll";
     chatWindow.style.padding = "10px";
-    chatWindow.style.backgroundColor = "#F9F9F9";
+    chatWindow.style.backgroundColor = "#FFFFFF";
     widget.appendChild(chatWindow);
 
     // Create input area
