@@ -1,13 +1,20 @@
 // Chat Widget Initialization
 const createChatWidget = (config) => {
-    const { apiKey, versionID, containerID } = config;
+    const {
+        apiKey,
+        versionID,
+        containerID,
+        widgetTitle = "Chat Widget",
+        sendIcon = "⬆️", // Default up arrow
+        waitingIcon = "⬜️" // Default square
+    } = config;
 
     if (!apiKey || !versionID) {
         console.error("Missing API Key or Version ID. Please provide both.");
         return;
     }
 
-    // Get the parent container
+    // Ensure container exists
     const container = document.getElementById(containerID);
     if (!container) {
         console.error(`Container with ID "${containerID}" not found!`);
@@ -27,6 +34,19 @@ const createChatWidget = (config) => {
     widget.style.backgroundColor = "#FFFFFF";
     container.appendChild(widget);
 
+    // Add widget title
+    const title = document.createElement("div");
+    title.id = "chat-title";
+    title.innerText = widgetTitle;
+    title.style.backgroundColor = "#007AFF";
+    title.style.color = "#FFF";
+    title.style.padding = "15px";
+    title.style.textAlign = "center";
+    title.style.fontWeight = "bold";
+    title.style.fontSize = "16px";
+    title.style.flexShrink = "0";
+    widget.appendChild(title);
+
     // Create chat window
     const chatWindow = document.createElement("div");
     chatWindow.id = "chat-window";
@@ -40,6 +60,8 @@ const createChatWidget = (config) => {
     const inputArea = document.createElement("div");
     inputArea.style.display = "flex";
     inputArea.style.padding = "10px";
+    inputArea.style.borderTop = "1px solid #CCC";
+    inputArea.style.position = "relative";
     widget.appendChild(inputArea);
 
     const userInput = document.createElement("input");
@@ -54,7 +76,7 @@ const createChatWidget = (config) => {
 
     const sendButton = document.createElement("button");
     sendButton.id = "send-button";
-    sendButton.textContent = "Send";
+    sendButton.innerHTML = sendIcon; // Default send icon
     sendButton.style.marginLeft = "10px";
     sendButton.style.padding = "10px 20px";
     sendButton.style.border = "none";
@@ -65,16 +87,19 @@ const createChatWidget = (config) => {
     inputArea.appendChild(sendButton);
 
     // Initialize Chat Logic
-    initializeChatLogic(apiKey, versionID);
+    initializeChatLogic(apiKey, versionID, sendButton, sendIcon, waitingIcon);
 };
 
-// Chat Logic Initialization (unchanged, reuse the existing logic)
-const initializeChatLogic = (apiKey, versionID) => {
+// Chat Logic Initialization
+const initializeChatLogic = (apiKey, versionID, sendButton, sendIcon, waitingIcon) => {
     const userId = `user_${Math.random().toString(36).substr(2, 9)}`;
     let activeChoices = [];
 
     const interact = async (request) => {
         try {
+            // Change send button to waiting icon
+            sendButton.innerHTML = waitingIcon;
+
             const response = await fetch(`https://general-runtime.voiceflow.com/state/user/${userId}/interact`, {
                 method: "POST",
                 headers: {
@@ -89,6 +114,9 @@ const initializeChatLogic = (apiKey, versionID) => {
             handleTraces(traces);
         } catch (error) {
             console.error("Error interacting with Voiceflow:", error);
+        } finally {
+            // Revert send button to send icon
+            sendButton.innerHTML = sendIcon;
         }
     };
 
