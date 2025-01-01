@@ -68,7 +68,7 @@ const createChatWidget = (config) => {
     initializeChatLogic(apiKey, versionID);
 };
 
-// Chat Logic Initialization (unchanged, reuse the existing logic)
+// Chat Logic Initialization (Enhanced for Enter Key Handling)
 const initializeChatLogic = (apiKey, versionID) => {
     const userId = `user_${Math.random().toString(36).substr(2, 9)}`;
     let activeChoices = [];
@@ -132,6 +132,9 @@ const initializeChatLogic = (apiKey, versionID) => {
                     buttonElement.style.color = "#007AFF";
                     buttonElement.style.cursor = "pointer";
                     buttonContainer.appendChild(buttonElement);
+
+                    // Add to active choices for input matching
+                    activeChoices.push({ label: button.name.toLowerCase(), request: button.request });
                 });
 
                 chatWindow.appendChild(buttonContainer);
@@ -163,6 +166,7 @@ const initializeChatLogic = (apiKey, versionID) => {
         const userInput = document.getElementById("user-input").value.trim();
         if (!userInput) return;
 
+        // Match input with choice buttons
         const matchedChoice = activeChoices.find(choice => choice.label === userInput.toLowerCase());
         if (matchedChoice) {
             addUserBubble(matchedChoice.label);
