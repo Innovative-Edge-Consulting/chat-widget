@@ -7,19 +7,20 @@ const createChatWidget = (config) => {
         return;
     }
 
-    // Ensure container exists
-    const container = document.getElementById(containerID) || document.body;
+    // Get the parent container
+    const container = document.getElementById(containerID);
+    if (!container) {
+        console.error(`Container with ID "${containerID}" not found!`);
+        return;
+    }
 
     // Create the main widget container
     const widget = document.createElement("div");
     widget.id = "chat-widget";
-    widget.style.position = "fixed";
-    widget.style.bottom = "20px";
-    widget.style.right = "20px";
-    widget.style.width = "350px";
-    widget.style.height = "500px";
     widget.style.display = "flex";
     widget.style.flexDirection = "column";
+    widget.style.width = "100%";
+    widget.style.height = "100%";
     widget.style.boxShadow = "0px 4px 8px rgba(0,0,0,0.1)";
     widget.style.borderRadius = "10px";
     widget.style.overflow = "hidden";
@@ -67,7 +68,7 @@ const createChatWidget = (config) => {
     initializeChatLogic(apiKey, versionID);
 };
 
-// Chat Logic Initialization
+// Chat Logic Initialization (unchanged, reuse the existing logic)
 const initializeChatLogic = (apiKey, versionID) => {
     const userId = `user_${Math.random().toString(36).substr(2, 9)}`;
     let activeChoices = [];
