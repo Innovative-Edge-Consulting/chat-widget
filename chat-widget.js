@@ -1,6 +1,11 @@
-// Chat Widget Function
+// Chat Widget Initialization
 const createChatWidget = (config) => {
     const { apiKey, versionID, containerID } = config;
+
+    if (!apiKey || !versionID) {
+        console.error("Missing API Key or Version ID. Please provide both.");
+        return;
+    }
 
     // Ensure container exists
     const container = document.getElementById(containerID) || document.body;
@@ -65,7 +70,7 @@ const createChatWidget = (config) => {
 // Chat Logic Initialization
 const initializeChatLogic = (apiKey, versionID) => {
     const userId = `user_${Math.random().toString(36).substr(2, 9)}`;
-    const activeChoices = [];
+    let activeChoices = [];
 
     const interact = async (request) => {
         try {
@@ -88,34 +93,46 @@ const initializeChatLogic = (apiKey, versionID) => {
 
     const handleTraces = (traces) => {
         const chatWindow = document.getElementById("chat-window");
+        if (!chatWindow) return console.error("Chat window not found!");
+
+        activeChoices = [];
 
         traces.forEach((trace) => {
             if (trace.type === "text") {
                 const message = document.createElement("div");
+                message.className = "assistant-bubble";
                 message.style.backgroundColor = "#E5E5EA";
                 message.style.color = "#000";
-                message.style.padding = "10px";
-                message.style.margin = "5px 10px";
-                message.style.borderRadius = "10px";
+                message.style.padding = "10px 15px";
+                message.style.margin = "5px 10px 5px 20px";
+                message.style.borderRadius = "20px";
+                message.style.maxWidth = "70%";
                 message.style.alignSelf = "flex-start";
                 message.innerText = trace.payload.message;
                 chatWindow.appendChild(message);
             } else if (trace.type === "choice") {
                 const buttonContainer = document.createElement("div");
-                buttonContainer.style.display = "flex";
-                buttonContainer.style.flexDirection = "column";
+                buttonContainer.className = "button-container";
+
                 trace.payload.buttons.forEach((button) => {
                     const buttonElement = document.createElement("button");
-                    buttonElement.style.margin = "5px 0";
-                    buttonElement.style.padding = "10px";
+                    buttonElement.className = "choice-button";
+                    buttonElement.innerText = button.name;
+                    buttonElement.onclick = () => {
+                        addUserBubble(button.name);
+                        interact(button.request);
+                    };
+
+                    buttonElement.style.padding = "10px 15px";
+                    buttonElement.style.margin = "2px 5px 2px 20px";
+                    buttonElement.style.borderRadius = "25px";
                     buttonElement.style.border = "1px solid #007AFF";
-                    buttonElement.style.backgroundColor = "#FFF";
+                    buttonElement.style.backgroundColor = "#FFFFFF";
                     buttonElement.style.color = "#007AFF";
-                    buttonElement.style.borderRadius = "5px";
-                    buttonElement.textContent = button.name;
-                    buttonElement.onclick = () => interact(button.request);
+                    buttonElement.style.cursor = "pointer";
                     buttonContainer.appendChild(buttonElement);
                 });
+
                 chatWindow.appendChild(buttonContainer);
             }
         });
@@ -123,17 +140,51 @@ const initializeChatLogic = (apiKey, versionID) => {
         chatWindow.scrollTop = chatWindow.scrollHeight;
     };
 
-    document.getElementById("send-button").onclick = () => {
-        const userInput = document.getElementById("user-input").value;
+    const addUserBubble = (message) => {
+        const chatWindow = document.getElementById("chat-window");
+        if (!chatWindow) return console.error("Chat window not found!");
+
+        const userMessage = document.createElement("div");
+        userMessage.className = "user-bubble";
+        userMessage.style.backgroundColor = "#007AFF";
+        userMessage.style.color = "#FFF";
+        userMessage.style.padding = "10px 15px";
+        userMessage.style.margin = "5px 20px 5px 10px";
+        userMessage.style.borderRadius = "20px";
+        userMessage.style.maxWidth = "70%";
+        userMessage.style.alignSelf = "flex-end";
+        userMessage.innerText = message;
+        chatWindow.appendChild(userMessage);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+    };
+
+    const handleTextInput = async () => {
+        const userInput = document.getElementById("user-input").value.trim();
         if (!userInput) return;
-        interact({ type: "text", payload: userInput });
+
+        const matchedChoice = activeChoices.find(choice => choice.label === userInput.toLowerCase());
+        if (matchedChoice) {
+            addUserBubble(matchedChoice.label);
+            await interact(matchedChoice.request);
+        } else {
+            addUserBubble(userInput);
+            await interact({ type: "text", payload: userInput });
+        }
+
         document.getElementById("user-input").value = "";
     };
-};
 
-// Embed the Chat Widget
-const config = {
-    apiKey: "YOUR_API_KEY", // Replace with your Voiceflow API Key
-    versionID: "YOUR_VERSION_ID", // Replace with your Voiceflow Version ID
+    document.getElementById("send-button").onclick = (event) => {
+        event.preventDefault();
+        handleTextInput();
+    };
+
+    document.getElementById("user-input").onkeydown = (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            handleTextInput();
+        }
+    };
+
+    interact({ type: "launch" });
 };
-createChatWidget(config);
