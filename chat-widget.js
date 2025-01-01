@@ -152,6 +152,10 @@ const initializeChatLogic = (apiKey, versionID) => {
     const chatWindow = document.getElementById("chat-window");
     if (!chatWindow) return console.error("Chat window not found!");
 
+    // Ensure the parent container is a flex container
+    chatWindow.style.display = "flex";
+    chatWindow.style.flexDirection = "column";
+
     const userMessage = document.createElement("div");
     userMessage.className = "user-bubble";
 
@@ -163,9 +167,8 @@ const initializeChatLogic = (apiKey, versionID) => {
     userMessage.style.borderRadius = "15px"; // Rounded corners
     userMessage.style.maxWidth = "50%"; // Cap bubble width at 50% of chat window
     userMessage.style.width = "fit-content"; // Auto-adjust width based on text length
-    userMessage.style.wordWrap = "break-word"; // Ensure text wraps within the bubble
+    userMessage.style.wordBreak = "break-word"; // Ensure text wraps within the bubble
     userMessage.style.alignSelf = "flex-end"; // Align bubble to the right
-    userMessage.style.textAlign = "left"; // Align text inside the bubble
 
     userMessage.innerText = message; // Add the message text
     chatWindow.appendChild(userMessage);
@@ -173,6 +176,7 @@ const initializeChatLogic = (apiKey, versionID) => {
     // Scroll to the bottom of the chat window
     chatWindow.scrollTop = chatWindow.scrollHeight;
 };
+
     const handleTextInput = async () => {
         const userInput = document.getElementById("user-input").value.trim();
         if (!userInput) return;
