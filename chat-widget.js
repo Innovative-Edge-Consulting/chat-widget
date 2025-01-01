@@ -21,11 +21,10 @@ const createChatWidget = (config) => {
     widget.style.flexDirection = "column";
     widget.style.width = "100%";
     widget.style.height = "100%";
-    widget.style.boxShadow = "0px 4px 8px rgba(0,0,0,0.1)";
-    widget.style.borderRadius = "10px";
-    widget.style.overflow = "hidden";
-    widget.style.backgroundColor = "#FFFFFF";
+    widget.style.overflow = "hidden"; // Ensures no content spills out
+    widget.style.backgroundColor = "#FFFFFF"; // White background
     container.appendChild(widget);
+
 
     // Create chat window
     const chatWindow = document.createElement("div");
