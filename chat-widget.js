@@ -159,13 +159,11 @@ const initializeChatLogic = (apiKey, versionID) => {
     userMessage.style.backgroundColor = "#007AFF"; // Blue bubble color
     userMessage.style.color = "#FFF"; // White text
     userMessage.style.padding = "10px 15px"; // Internal padding
-    userMessage.style.margin = "5px auto 5px 20px"; // Push bubble to the right
+    userMessage.style.margin = "5px 10px 5px auto"; // Push bubble to the right
     userMessage.style.borderRadius = "15px"; // Rounded corners
     userMessage.style.maxWidth = "50%"; // Maximum width of 50% of chat window
-    userMessage.style.display = "inline-block"; // Allow auto-expansion
     userMessage.style.wordBreak = "break-word"; // Ensure text wraps within the bubble
     userMessage.style.alignSelf = "flex-end"; // Align bubble to the right
-    userMessage.style.textAlign = "right"; // Align text content to the right within the bubble
 
     userMessage.innerText = message; // Add the message text
     chatWindow.appendChild(userMessage);
