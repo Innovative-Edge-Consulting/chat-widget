@@ -30,16 +30,19 @@ const createChatWidget = (config) => {
     // Create chat window
     const chatWindow = document.createElement("div");
     chatWindow.id = "chat-window";
-    chatWindow.style.flex = "1";
-    chatWindow.style.overflowY = "scroll";
+    chatWindow.style.flex = "1"; // Take up remaining space
+    chatWindow.style.overflowY = "scroll"; // Enable scrolling
     chatWindow.style.padding = "10px";
     chatWindow.style.backgroundColor = "rgba(249, 249, 249, 0.8)"; // Slightly transparent background
+    chatWindow.style.display = "flex"; // Ensures content alignment
+    chatWindow.style.flexDirection = "column"; // Messages stack vertically
     widget.appendChild(chatWindow);
 
     // Create input area
     const inputArea = document.createElement("div");
     inputArea.style.display = "flex";
     inputArea.style.padding = "10px";
+    inputArea.style.borderTop = "1px solid #CCC";
     widget.appendChild(inputArea);
 
     const userInput = document.createElement("input");
@@ -64,6 +67,9 @@ const createChatWidget = (config) => {
     sendButton.style.color = "#FFF";
     sendButton.style.cursor = "pointer";
     inputArea.appendChild(sendButton);
+
+    // Debugging Logs
+    console.log("Widget and Chat Window created successfully.");
 
     // Initialize Chat Logic
     initializeChatLogic(apiKey, versionID);
