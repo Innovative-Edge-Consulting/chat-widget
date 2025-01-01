@@ -19,23 +19,23 @@ const createChatWidget = (config) => {
     widget.style.display = "flex";
     widget.style.flexDirection = "column";
     widget.style.width = "100%";
-    widget.style.height = "100%";
-    widget.style.border = "none"; // Remove border
-    widget.style.boxShadow = "none"; // Remove shadow
+    widget.style.height = "100%"; // Full height of parent container
+    widget.style.border = "none";
+    widget.style.boxShadow = "none";
     widget.style.borderRadius = "10px";
-    widget.style.backgroundColor = "rgba(255, 255, 255, 0.8)"; // Semi-transparent background
+    widget.style.backgroundColor = "rgba(255, 255, 255, 0.8)";
     widget.style.overflow = "hidden";
     container.appendChild(widget);
 
     // Create chat window
     const chatWindow = document.createElement("div");
     chatWindow.id = "chat-window";
-    chatWindow.style.flex = "1"; // Take up remaining space
-    chatWindow.style.overflowY = "scroll"; // Enable scrolling
+    chatWindow.style.flex = "1"; // Auto-expand to fill space
+    chatWindow.style.overflowY = "scroll"; // Enable scrolling for content
     chatWindow.style.padding = "10px";
-    chatWindow.style.backgroundColor = "rgba(249, 249, 249, 0.8)"; // Slightly transparent background
-    chatWindow.style.display = "flex"; // Ensures content alignment
-    chatWindow.style.flexDirection = "column"; // Messages stack vertically
+    chatWindow.style.backgroundColor = "rgba(249, 249, 249, 0.8)";
+    chatWindow.style.display = "flex"; // Proper alignment
+    chatWindow.style.flexDirection = "column"; // Stack chat bubbles
     widget.appendChild(chatWindow);
 
     // Create input area
@@ -43,6 +43,7 @@ const createChatWidget = (config) => {
     inputArea.style.display = "flex";
     inputArea.style.padding = "10px";
     inputArea.style.borderTop = "1px solid #CCC";
+    inputArea.style.flexShrink = "0"; // Prevent shrinking
     widget.appendChild(inputArea);
 
     const userInput = document.createElement("input");
@@ -53,7 +54,7 @@ const createChatWidget = (config) => {
     userInput.style.border = "1px solid #CCC";
     userInput.style.borderRadius = "5px";
     userInput.style.padding = "10px";
-    userInput.style.backgroundColor = "rgba(255, 255, 255, 0.8)"; // Transparent input field
+    userInput.style.backgroundColor = "rgba(255, 255, 255, 0.8)";
     inputArea.appendChild(userInput);
 
     const sendButton = document.createElement("button");
