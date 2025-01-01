@@ -25,7 +25,6 @@ const createChatWidget = (config) => {
     widget.style.backgroundColor = "#FFFFFF"; // White background
     container.appendChild(widget);
 
-
     // Create chat window
     const chatWindow = document.createElement("div");
     chatWindow.id = "chat-window";
@@ -51,16 +50,36 @@ const createChatWidget = (config) => {
     userInput.style.padding = "10px";
     inputArea.appendChild(userInput);
 
+    // Create enhanced send button
     const sendButton = document.createElement("button");
     sendButton.id = "send-button";
-    sendButton.textContent = "Send";
+    sendButton.innerHTML = "&#9654;"; // Unicode for Play icon (default)
     sendButton.style.marginLeft = "10px";
-    sendButton.style.padding = "10px 20px";
+    sendButton.style.padding = "10px";
     sendButton.style.border = "none";
-    sendButton.style.borderRadius = "5px";
+    sendButton.style.borderRadius = "50%"; // Circular shape
     sendButton.style.backgroundColor = "#007AFF";
     sendButton.style.color = "#FFF";
     sendButton.style.cursor = "pointer";
+    sendButton.style.display = "flex";
+    sendButton.style.alignItems = "center";
+    sendButton.style.justifyContent = "center";
+    sendButton.style.width = "40px"; // Circular size
+    sendButton.style.height = "40px"; // Circular size
+    sendButton.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
+    sendButton.style.transition = "background-color 0.3s ease, transform 0.2s ease";
+
+    // Hover effects
+    sendButton.onmouseover = () => {
+        sendButton.style.backgroundColor = "#005BBB"; // Darker blue on hover
+        sendButton.style.transform = "scale(1.1)"; // Slight zoom effect
+    };
+    sendButton.onmouseout = () => {
+        sendButton.style.backgroundColor = "#007AFF"; // Reset to original
+        sendButton.style.transform = "scale(1)";
+    };
+
+    // Append the send button to the input area
     inputArea.appendChild(sendButton);
 
     // Initialize Chat Logic
@@ -143,38 +162,30 @@ const initializeChatLogic = (apiKey, versionID) => {
         chatWindow.scrollTop = chatWindow.scrollHeight;
     };
 
-    /**
-     * Updated addUserBubble Function:
-     * Dynamically adjusts bubble size based on content and caps width at 50%.
-     */
     const addUserBubble = (message) => {
-    const chatWindow = document.getElementById("chat-window");
-    if (!chatWindow) return console.error("Chat window not found!");
+        const chatWindow = document.getElementById("chat-window");
+        if (!chatWindow) return console.error("Chat window not found!");
 
-    // Ensure the parent container is correctly styled
-    chatWindow.style.display = "flex"; // Set as a flex container
-    chatWindow.style.flexDirection = "column"; // Stack bubbles vertically
+        const userMessage = document.createElement("div");
+        userMessage.className = "user-bubble";
 
-    const userMessage = document.createElement("div");
-    userMessage.className = "user-bubble";
+        // Style the bubble
+        userMessage.style.backgroundColor = "#007AFF"; // Blue bubble color
+        userMessage.style.color = "#FFF"; // White text
+        userMessage.style.padding = "10px 15px"; // Internal padding
+        userMessage.style.margin = "5px 0 5px auto"; // Align to the right with auto on the left
+        userMessage.style.borderRadius = "15px"; // Rounded corners
+        userMessage.style.maxWidth = "50%"; // Cap bubble width at 50% of chat window
+        userMessage.style.width = "fit-content"; // Auto-adjust width based on text length
+        userMessage.style.wordBreak = "break-word"; // Ensure text wraps within the bubble
+        userMessage.style.textAlign = "left"; // Align text inside the bubble
 
-    // Style the bubble
-    userMessage.style.backgroundColor = "#007AFF"; // Blue bubble color
-    userMessage.style.color = "#FFF"; // White text
-    userMessage.style.padding = "10px 15px"; // Internal padding
-    userMessage.style.margin = "5px 0 5px auto"; // Align to the right with auto on the left
-    userMessage.style.borderRadius = "15px"; // Rounded corners
-    userMessage.style.maxWidth = "50%"; // Cap bubble width at 50% of chat window
-    userMessage.style.width = "fit-content"; // Auto-adjust width based on text length
-    userMessage.style.wordBreak = "break-word"; // Ensure text wraps within the bubble
-    userMessage.style.textAlign = "left"; // Align text inside the bubble
+        userMessage.innerText = message; // Add the message text
+        chatWindow.appendChild(userMessage);
 
-    userMessage.innerText = message; // Add the message text
-    chatWindow.appendChild(userMessage);
-
-    // Scroll to the bottom of the chat window
-    chatWindow.scrollTop = chatWindow.scrollHeight;
-};
+        // Scroll to the bottom of the chat window
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+    };
 
     const handleTextInput = async () => {
         const userInput = document.getElementById("user-input").value.trim();
