@@ -7,7 +7,7 @@ const createChatWidget = (config) => {
         return;
     }
 
-    // Get the parent container
+    // Ensure container exists
     const container = document.getElementById(containerID);
     if (!container) {
         console.error(`Container with ID "${containerID}" not found!`);
@@ -68,7 +68,7 @@ const createChatWidget = (config) => {
     initializeChatLogic(apiKey, versionID);
 };
 
-// Chat Logic Initialization (unchanged, reuse the existing logic)
+// Chat Logic Initialization
 const initializeChatLogic = (apiKey, versionID) => {
     const userId = `user_${Math.random().toString(36).substr(2, 9)}`;
     let activeChoices = [];
