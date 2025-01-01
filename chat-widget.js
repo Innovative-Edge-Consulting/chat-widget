@@ -159,12 +159,13 @@ const initializeChatLogic = (apiKey, versionID) => {
     userMessage.style.backgroundColor = "#007AFF"; // Blue bubble color
     userMessage.style.color = "#FFF"; // White text
     userMessage.style.padding = "10px 15px"; // Internal padding
-    userMessage.style.margin = "5px auto 5px 10px"; // Align to the right with margin
+    userMessage.style.margin = "5px auto 5px 0"; // Push bubble to the right
     userMessage.style.borderRadius = "15px"; // Rounded corners
     userMessage.style.maxWidth = "50%"; // Cap bubble width at 50% of chat window
-    userMessage.style.width = "auto"; // Auto-adjust width based on text length
-    userMessage.style.wordBreak = "break-word"; // Ensure text wraps within the bubble
+    userMessage.style.width = "fit-content"; // Auto-adjust width based on text length
+    userMessage.style.wordWrap = "break-word"; // Ensure text wraps within the bubble
     userMessage.style.alignSelf = "flex-end"; // Align bubble to the right
+    userMessage.style.textAlign = "left"; // Align text inside the bubble
 
     userMessage.innerText = message; // Add the message text
     chatWindow.appendChild(userMessage);
@@ -172,7 +173,6 @@ const initializeChatLogic = (apiKey, versionID) => {
     // Scroll to the bottom of the chat window
     chatWindow.scrollTop = chatWindow.scrollHeight;
 };
-
     const handleTextInput = async () => {
         const userInput = document.getElementById("user-input").value.trim();
         if (!userInput) return;
