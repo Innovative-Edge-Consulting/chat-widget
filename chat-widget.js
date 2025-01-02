@@ -21,23 +21,25 @@ const createChatWidget = (config) => {
     widget.style.flexDirection = "column";
     widget.style.width = "100%";
     widget.style.height = "100%";
-    widget.style.position = "relative";
+    widget.style.position = "relative"; // Properly contain children
+    widget.style.overflow = "hidden"; // Prevent overflow outside widget
     widget.style.backgroundColor = "#FFFFFF";
     container.appendChild(widget);
 
     // Create chat window
     const chatWindow = document.createElement("div");
     chatWindow.id = "chat-window";
-    chatWindow.style.flex = "1";
-    chatWindow.style.overflowY = "auto"; // Scrollable area
+    chatWindow.style.flex = "1"; // Allow dynamic height growth
+    chatWindow.style.overflowY = "auto"; // Scrollable for long conversations
     chatWindow.style.padding = "10px";
     chatWindow.style.backgroundColor = "#FFFFFF";
+    chatWindow.style.boxSizing = "border-box"; // Ensure proper sizing
     widget.appendChild(chatWindow);
 
     // Create input area
     const inputArea = document.createElement("div");
     inputArea.id = "input-area";
-    inputArea.style.position = "fixed"; // Fixed at the bottom
+    inputArea.style.position = "relative"; // Adjust within widget
     inputArea.style.bottom = "0";
     inputArea.style.width = "100%";
     inputArea.style.display = "flex";
@@ -45,7 +47,7 @@ const createChatWidget = (config) => {
     inputArea.style.padding = "10px";
     inputArea.style.backgroundColor = "#F9F9F9";
     inputArea.style.boxShadow = "0px -2px 5px rgba(0,0,0,0.1)"; // Shadow for separation
-    container.appendChild(inputArea);
+    widget.appendChild(inputArea);
 
     const userInput = document.createElement("input");
     userInput.id = "user-input";
