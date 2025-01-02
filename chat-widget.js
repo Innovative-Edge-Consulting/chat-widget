@@ -17,37 +17,27 @@ const createChatWidget = (config) => {
     // Create the main widget container
     const widget = document.createElement("div");
     widget.id = "chat-widget";
-    widget.style.position = "relative"; // Allow stacking of input area and chat window
+    widget.style.display = "flex";
+    widget.style.flexDirection = "column";
     widget.style.width = "100%";
     widget.style.height = "100%";
-    widget.style.backgroundColor = "#FFFFFF";
+    widget.style.overflow = "hidden"; // Ensures no content spills out
+    widget.style.backgroundColor = "#FFFFFF"; // White background
     container.appendChild(widget);
 
     // Create chat window
     const chatWindow = document.createElement("div");
     chatWindow.id = "chat-window";
-    chatWindow.style.position = "absolute"; // Dynamically position chat window
-    chatWindow.style.top = "0";
-    chatWindow.style.bottom = "60px"; // Adjust to leave space for input area
-    chatWindow.style.left = "0";
-    chatWindow.style.right = "0";
-    chatWindow.style.overflowY = "scroll"; // Enable scrolling for long conversations
+    chatWindow.style.flex = "1";
+    chatWindow.style.overflowY = "scroll";
     chatWindow.style.padding = "10px";
     chatWindow.style.backgroundColor = "#FFFFFF";
     widget.appendChild(chatWindow);
 
     // Create input area
     const inputArea = document.createElement("div");
-    inputArea.id = "input-area";
-    inputArea.style.position = "absolute"; // Fix input area at the bottom
-    inputArea.style.bottom = "0";
-    inputArea.style.left = "0";
-    inputArea.style.right = "0";
-    inputArea.style.height = "60px"; // Fixed height for input area
     inputArea.style.display = "flex";
-    inputArea.style.alignItems = "center";
     inputArea.style.padding = "10px";
-    inputArea.style.backgroundColor = "#F9F9F9"; // Background for input area
     widget.appendChild(inputArea);
 
     const userInput = document.createElement("input");
@@ -60,22 +50,36 @@ const createChatWidget = (config) => {
     userInput.style.padding = "10px";
     inputArea.appendChild(userInput);
 
-    // Create send button
+    // Create enhanced send button
     const sendButton = document.createElement("button");
     sendButton.id = "send-button";
-    sendButton.innerHTML = "&#9654;"; // Unicode for right-pointing arrow
+    sendButton.innerHTML = "&#9654;"; // Unicode for Play icon (default)
     sendButton.style.marginLeft = "10px";
     sendButton.style.padding = "10px";
     sendButton.style.border = "none";
-    sendButton.style.borderRadius = "50%";
+    sendButton.style.borderRadius = "50%"; // Circular shape
     sendButton.style.backgroundColor = "#007AFF";
     sendButton.style.color = "#FFF";
     sendButton.style.cursor = "pointer";
     sendButton.style.display = "flex";
     sendButton.style.alignItems = "center";
     sendButton.style.justifyContent = "center";
-    sendButton.style.width = "40px";
-    sendButton.style.height = "40px";
+    sendButton.style.width = "40px"; // Circular size
+    sendButton.style.height = "40px"; // Circular size
+    sendButton.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
+    sendButton.style.transition = "background-color 0.3s ease, transform 0.2s ease";
+
+    // Hover effects
+    sendButton.onmouseover = () => {
+        sendButton.style.backgroundColor = "#005BBB"; // Darker blue on hover
+        sendButton.style.transform = "scale(1.1)"; // Slight zoom effect
+    };
+    sendButton.onmouseout = () => {
+        sendButton.style.backgroundColor = "#007AFF"; // Reset to original
+        sendButton.style.transform = "scale(1)";
+    };
+
+    // Append the send button to the input area
     inputArea.appendChild(sendButton);
 
     // Initialize Chat Logic
@@ -166,17 +170,17 @@ const initializeChatLogic = (apiKey, versionID) => {
         userMessage.className = "user-bubble";
 
         // Style the bubble
-        userMessage.style.backgroundColor = "#007AFF";
-        userMessage.style.color = "#FFF";
-        userMessage.style.padding = "10px 15px";
-        userMessage.style.margin = "5px 0 5px auto";
-        userMessage.style.borderRadius = "15px";
-        userMessage.style.maxWidth = "50%";
-        userMessage.style.width = "fit-content";
-        userMessage.style.wordBreak = "break-word";
-        userMessage.style.textAlign = "left";
+        userMessage.style.backgroundColor = "#007AFF"; // Blue bubble color
+        userMessage.style.color = "#FFF"; // White text
+        userMessage.style.padding = "10px 15px"; // Internal padding
+        userMessage.style.margin = "5px 0 5px auto"; // Align to the right with auto on the left
+        userMessage.style.borderRadius = "15px"; // Rounded corners
+        userMessage.style.maxWidth = "50%"; // Cap bubble width at 50% of chat window
+        userMessage.style.width = "fit-content"; // Auto-adjust width based on text length
+        userMessage.style.wordBreak = "break-word"; // Ensure text wraps within the bubble
+        userMessage.style.textAlign = "left"; // Align text inside the bubble
 
-        userMessage.innerText = message;
+        userMessage.innerText = message; // Add the message text
         chatWindow.appendChild(userMessage);
 
         // Scroll to the bottom of the chat window
@@ -187,6 +191,7 @@ const initializeChatLogic = (apiKey, versionID) => {
         const userInput = document.getElementById("user-input").value.trim();
         if (!userInput) return;
 
+        // Match input with choice buttons
         const matchedChoice = activeChoices.find(choice => choice.label === userInput.toLowerCase());
         if (matchedChoice) {
             addUserBubble(matchedChoice.label);
