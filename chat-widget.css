@@ -19,6 +19,7 @@
   --incoming-chat-border: #444654;
 }
 
+/* Light mode variables (optional) */
 .light-mode {
   --text-color: #343541;
   --icon-color: #a9a9bc;
@@ -34,7 +35,7 @@ body {
   background: var(--outgoing-chat-bg);
 }
 
-/* Chats container styling */
+/* Chat container */
 .chat-container {
   overflow-y: auto;
   max-height: 100vh;
@@ -53,6 +54,7 @@ body {
   border-radius: 25px;
 }
 
+/* Default text placeholder area */
 .default-text {
   display: flex;
   align-items: center;
@@ -71,6 +73,7 @@ body {
   font-size: 1.1rem;
 }
 
+/* Chat bubbles */
 .chat-container .chat {
   padding: 25px 10px;
   display: flex;
@@ -130,6 +133,7 @@ span.material-symbols-rounded {
   color: #e55865;
 }
 
+/* Typing (dot) animation */
 .chat .typing-animation {
   padding-left: 25px;
   display: inline-flex;
@@ -159,7 +163,7 @@ span.material-symbols-rounded {
   }
 }
 
-/* Typing container styling */
+/* Typing container at bottom */
 .typing-container {
   position: fixed;
   bottom: 0;
@@ -171,7 +175,7 @@ span.material-symbols-rounded {
   border-top: 1px solid var(--incoming-chat-border);
 }
 
-/* Center the text field area within typing-content */
+/* Center text field area */
 .typing-container .typing-content {
   display: flex;
   max-width: 950px;
@@ -180,49 +184,50 @@ span.material-symbols-rounded {
   align-items: center;
 }
 
+/* Limit to 600px wide and center it */
 .typing-container .typing-textarea {
   max-width: 600px;
   width: 100%;
   margin: 0 auto;
-
   display: flex;
   position: relative;
   align-items: center;
 }
 
-/* Reduced left padding from 20px to 10px to avoid pushing text too far right */
+/* Key override: reduce left padding from 20px to 10px */
 .typing-textarea textarea {
-  flex: 1;
-  padding: 15px 45px 15px 10px;
-  margin-right: 10px;
-  border: none;
-  height: 55px;
-  color: var(--text-color);
-  font-size: 1rem;
-  border-radius: 4px;
+  flex: 1 !important;
+  padding: 15px 45px 15px 10px !important; 
+  margin-right: 10px !important;
+  border: none !important;
+  height: 55px !important;
+  color: var(--text-color) !important;
+  font-size: 1rem !important;
+  border-radius: 4px !important;
   max-height: 250px;
   overflow-y: auto;
-  background: var(--incoming-chat-bg);
-  outline: 1px solid var(--incoming-chat-border);
+  background: var(--incoming-chat-bg) !important;
+  outline: 1px solid var(--incoming-chat-border) !important;
 }
 .typing-textarea textarea::placeholder {
-  color: var(--placeholder-color);
+  color: var(--placeholder-color) !important;
 }
 
+/* Send button sizing */
 .typing-content span {
-  width: 55px;
-  height: 55px;
+  width: 55px !important;
+  height: 55px !important;
   display: flex;
   border-radius: 4px;
   font-size: 1.35rem;
   align-items: center;
   justify-content: center;
-  color: var(--icon-color);
+  color: var(--icon-color) !important;
 }
 
-/* The send button is absolutely positioned in the .typing-textarea */
+/* Absolutely positioned inside the .typing-textarea */
 .typing-textarea span {
-  position: absolute;
+  position: absolute !important;
   right: 0;
   bottom: 0;
   visibility: hidden;
@@ -231,6 +236,7 @@ span.material-symbols-rounded {
   visibility: visible;
 }
 
+/* Additional controls (if any) */
 .typing-controls {
   display: flex;
 }
@@ -244,7 +250,7 @@ span.material-symbols-rounded {
   background: var(--icon-hover-bg);
 }
 
-/* Responsive Media Query */
+/* Responsive adjustments */
 @media screen and (max-width: 600px) {
   .default-text h1 {
     font-size: 2.3rem;
@@ -269,12 +275,12 @@ span.material-symbols-rounded {
     padding: 15px 10px;
   }
   .typing-textarea textarea {
-    height: 45px;
-    padding: 10px 40px 10px 10px; /* Reduce padding on smaller screens, too */
+    height: 45px !important;
+    padding: 10px 40px 10px 10px !important;
   }
   .typing-content span {
-    height: 45px;
-    width: 45px;
+    height: 45px !important;
+    width: 45px !important;
     margin-left: 5px;
   }
   span.material-symbols-rounded {
