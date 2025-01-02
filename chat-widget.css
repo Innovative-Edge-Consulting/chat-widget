@@ -1,11 +1,13 @@
 /* Import Google font - Poppins */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
+
 :root {
   --text-color: #FFFFFF;
   --icon-color: #ACACBE;
@@ -16,6 +18,7 @@
   --outgoing-chat-border: #343541;
   --incoming-chat-border: #444654;
 }
+
 .light-mode {
   --text-color: #343541;
   --icon-color: #a9a9bc;
@@ -26,6 +29,7 @@
   --outgoing-chat-border: #FFFFFF;
   --incoming-chat-border: #D9D9E3;
 }
+
 body {
   background: var(--outgoing-chat-bg);
 }
@@ -36,6 +40,7 @@ body {
   max-height: 100vh;
   padding-bottom: 150px;
 }
+
 :where(.chat-container, textarea)::-webkit-scrollbar {
   width: 6px;
 }
@@ -47,6 +52,7 @@ body {
   background: var(--icon-color);
   border-radius: 25px;
 }
+
 .default-text {
   display: flex;
   align-items: center;
@@ -64,6 +70,7 @@ body {
   margin-top: 10px;
   font-size: 1.1rem;
 }
+
 .chat-container .chat {
   padding: 25px 10px;
   display: flex;
@@ -78,6 +85,7 @@ body {
   background: var(--incoming-chat-bg);
   border: 1px solid var(--incoming-chat-border);
 }
+
 .chat .chat-content {
   display: flex;
   max-width: 1200px;
@@ -85,6 +93,7 @@ body {
   align-items: flex-start;
   justify-content: space-between;
 }
+
 span.material-symbols-rounded {
   user-select: none;
   cursor: pointer;
@@ -98,6 +107,7 @@ span.material-symbols-rounded {
 .chat:hover .chat-content:not(:has(.typing-animation), :has(.error)) span {
   visibility: visible;
 }
+
 .chat .chat-details {
   display: flex;
   align-items: center;
@@ -119,6 +129,7 @@ span.material-symbols-rounded {
 .chat .chat-details p.error {
   color: #e55865;
 }
+
 .chat .typing-animation {
   padding-left: 25px;
   display: inline-flex;
@@ -160,38 +171,32 @@ span.material-symbols-rounded {
   border-top: 1px solid var(--incoming-chat-border);
 }
 
-/* Center the text field area */
+/* Center the text field area within typing-content */
 .typing-container .typing-content {
   display: flex;
   max-width: 950px;
   width: 100%;
-  /* Ensure content is centered horizontally & vertically */
   justify-content: center;
   align-items: center;
 }
 
 .typing-container .typing-textarea {
-  /* Keep a maximum width so it doesn't stretch too wide */
   max-width: 600px;
   width: 100%;
   margin: 0 auto;
 
-  /* Maintain the existing layout */
   display: flex;
   position: relative;
-  align-items: center; /* vertically center the textarea and button */
+  align-items: center;
 }
 
+/* Reduced left padding from 20px to 10px to avoid pushing text too far right */
 .typing-textarea textarea {
-  resize: none;
-  /* Let textarea stretch to fill available space */
   flex: 1;
-
-  height: 55px;
-  width: 100%;
+  padding: 15px 45px 15px 10px;
+  margin-right: 10px;
   border: none;
-  margin-right: 10px; /* add spacing for send button */
-  padding: 15px 45px 15px 20px;
+  height: 55px;
   color: var(--text-color);
   font-size: 1rem;
   border-radius: 4px;
@@ -203,6 +208,7 @@ span.material-symbols-rounded {
 .typing-textarea textarea::placeholder {
   color: var(--placeholder-color);
 }
+
 .typing-content span {
   width: 55px;
   height: 55px;
@@ -213,6 +219,8 @@ span.material-symbols-rounded {
   justify-content: center;
   color: var(--icon-color);
 }
+
+/* The send button is absolutely positioned in the .typing-textarea */
 .typing-textarea span {
   position: absolute;
   right: 0;
@@ -222,6 +230,7 @@ span.material-symbols-rounded {
 .typing-textarea textarea:valid ~ span {
   visibility: visible;
 }
+
 .typing-controls {
   display: flex;
 }
@@ -261,7 +270,7 @@ span.material-symbols-rounded {
   }
   .typing-textarea textarea {
     height: 45px;
-    padding: 10px 40px 10px 10px;
+    padding: 10px 40px 10px 10px; /* Reduce padding on smaller screens, too */
   }
   .typing-content span {
     height: 45px;
