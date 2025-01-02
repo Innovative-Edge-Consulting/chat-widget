@@ -12,11 +12,11 @@
   --text-color: #343541;
   --icon-color: #ACACBE;
   --icon-hover-bg: #5b5e71;
-  --placeholder-color: #dcdcdc;
-  --outgoing-chat-bg: #FFFFFF; /* Chat background is now white */
-  --incoming-chat-bg: #F7F7F8; /* Incoming messages background */
-  --outgoing-chat-border: #D9D9D9; /* Outgoing chat border */
-  --incoming-chat-border: #D9D9D3; /* Incoming chat border */
+  --placeholder-color: #6c6c6c; /* Dark grey for better visibility */
+  --outgoing-chat-bg: #FFFFFF; /* White chat background */
+  --incoming-chat-bg: #F7F7F8; /* Light grey incoming message background */
+  --outgoing-chat-border: #D9D9D9;
+  --incoming-chat-border: #D9D9D3;
   --input-bg: #EDEDED; /* Light grey input field background */
 }
 
@@ -110,7 +110,7 @@ body {
 }
 
 .typing-textarea textarea::placeholder {
-  color: var(--placeholder-color);
+  color: var(--placeholder-color); /* Dark grey placeholder text */
 }
 
 .typing-textarea span#send-button {
@@ -124,4 +124,22 @@ body {
   color: var(--text-color);
   border-radius: 4px;
   cursor: pointer;
+}
+
+/* Choice buttons */
+.choice-button {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 5px;
+  border: 1px solid var(--text-color);
+  border-radius: 4px;
+  background-color: var(--incoming-chat-bg);
+  color: var(--text-color);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.choice-button:hover {
+  background-color: var(--icon-hover-bg);
+  color: #fff;
 }
