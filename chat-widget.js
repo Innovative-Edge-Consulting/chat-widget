@@ -32,17 +32,18 @@ const createChatWidget = (config) => {
     inputArea.className = "typing-container"; // Apply CSS class for input area
     widget.appendChild(inputArea);
 
-    const userInput = document.createElement("textarea");
+    const userInput = document.createElement("input");
     userInput.id = "user-input";
-    userInput.className = "typing-textarea"; // Apply CSS class for text input
+    userInput.type = "text";
     userInput.placeholder = "Type your message...";
+    userInput.className = "typing-textarea"; // Apply CSS class for text input
     inputArea.appendChild(userInput);
 
     // Create send button
-    const sendButton = document.createElement("span");
+    const sendButton = document.createElement("button");
     sendButton.id = "send-button";
-    sendButton.className = "material-symbols-rounded typing-controls"; // Apply CSS class for send button
-    sendButton.innerHTML = "send"; // Use material symbols for the send icon
+    sendButton.innerHTML = "&#9654;"; // Unicode for right-pointing arrow
+    sendButton.className = "typing-controls"; // Apply CSS class for send button
     inputArea.appendChild(sendButton);
 
     // Initialize Chat Logic
@@ -80,25 +81,43 @@ const initializeChatLogic = (apiKey, versionID) => {
         activeChoices = [];
 
         traces.forEach((trace) => {
-            const chat = document.createElement("div");
-            chat.className = trace.type === "text" ? "chat incoming" : "chat outgoing";
-
-            const chatContent = document.createElement("div");
-            chatContent.className = "chat-content";
-
-            const chatDetails = document.createElement("div");
-            chatDetails.className = "chat-details";
-
             if (trace.type === "text") {
-                const text = document.createElement("p");
-                text.innerText = trace.payload.message;
-                chatDetails.appendChild(text);
-            }
+                const message = document.createElement("div");
+                message.className = "assistant-bubble";
+                message.innerText = trace.payload.message;
+                chatWindow.appendChild(message);
+            } else if (trace.type === "choice") {
+                const buttonContainer = document.createElement("div");
+                buttonContainer.className = "button-container";
 
-            chatContent.appendChild(chatDetails);
-            chat.appendChild(chatContent);
-            chatWindow.appendChild(chat);
+                trace.payload.buttons.forEach((button) => {
+                    const buttonElement = document.createElement("button");
+                    buttonElement.className = "choice-button";
+                    buttonElement.innerText = button.name;
+                    buttonElement.onclick = () => {
+                        addUserBubble(button.name);
+                        interact(button.request);
+                    };
+
+                    buttonContainer.appendChild(buttonElement);
+                    activeChoices.push({ label: button.name.toLowerCase(), request: button.request });
+                });
+
+                chatWindow.appendChild(buttonContainer);
+            }
         });
+
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+    };
+
+    const addUserBubble = (message) => {
+        const chatWindow = document.getElementById("chat-window");
+        if (!chatWindow) return console.error("Chat window not found!");
+
+        const userMessage = document.createElement("div");
+        userMessage.className = "user-bubble";
+        userMessage.innerText = message;
+        chatWindow.appendChild(userMessage);
 
         chatWindow.scrollTop = chatWindow.scrollHeight;
     };
@@ -109,23 +128,7 @@ const initializeChatLogic = (apiKey, versionID) => {
         if (!text) return;
 
         // Display the user message
-        const chatWindow = document.getElementById("chat-window");
-        const outgoingChat = document.createElement("div");
-        outgoingChat.className = "chat outgoing";
-
-        const chatContent = document.createElement("div");
-        chatContent.className = "chat-content";
-
-        const chatDetails = document.createElement("div");
-        chatDetails.className = "chat-details";
-
-        const message = document.createElement("p");
-        message.innerText = text;
-        chatDetails.appendChild(message);
-
-        chatContent.appendChild(chatDetails);
-        outgoingChat.appendChild(chatContent);
-        chatWindow.appendChild(outgoingChat);
+        addUserBubble(text);
 
         // Send the user's input to Voiceflow
         await interact({ type: "text", payload: text });
