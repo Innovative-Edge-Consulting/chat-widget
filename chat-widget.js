@@ -1,4 +1,3 @@
-// Chat Widget Initialization
 const createChatWidget = (config) => {
     const { apiKey, versionID, containerID } = config;
 
@@ -7,50 +6,44 @@ const createChatWidget = (config) => {
         return;
     }
 
-    // Get the parent container
     const container = document.getElementById(containerID);
     if (!container) {
         console.error(`Container with ID "${containerID}" not found!`);
         return;
     }
 
-    // Create the main widget container
+    // Create main widget container
     const widget = document.createElement("div");
     widget.id = "chat-widget";
-    widget.className = "chat-container"; // Apply CSS class for container styling
+    widget.className = "chat-container";
     container.appendChild(widget);
 
     // Create chat window
     const chatWindow = document.createElement("div");
     chatWindow.id = "chat-window";
-    chatWindow.className = "chat-window"; // Apply CSS class for chat window
+    chatWindow.className = "chat-window";
     widget.appendChild(chatWindow);
 
     // Create input area
     const inputArea = document.createElement("div");
-    inputArea.id = "input-area";
-    inputArea.className = "typing-container"; // Apply CSS class for input area
-    widget.appendChild(inputArea);
+    inputArea.className = "input-area";
 
     const userInput = document.createElement("input");
     userInput.id = "user-input";
     userInput.type = "text";
     userInput.placeholder = "Type your message...";
-    userInput.className = "typing-textarea"; // Apply CSS class for text input
     inputArea.appendChild(userInput);
 
-    // Create send button
     const sendButton = document.createElement("button");
     sendButton.id = "send-button";
-    sendButton.innerHTML = "&#9654;"; // Unicode for right-pointing arrow
-    sendButton.className = "typing-controls"; // Apply CSS class for send button
+    sendButton.innerHTML = "&#9654;";
     inputArea.appendChild(sendButton);
 
-    // Initialize Chat Logic
+    widget.appendChild(inputArea);
+
     initializeChatLogic(apiKey, versionID);
 };
 
-// Chat Logic Initialization
 const initializeChatLogic = (apiKey, versionID) => {
     const userId = `user_${Math.random().toString(36).substr(2, 9)}`;
     let activeChoices = [];
@@ -88,7 +81,6 @@ const initializeChatLogic = (apiKey, versionID) => {
                 chatWindow.appendChild(message);
             } else if (trace.type === "choice") {
                 const buttonContainer = document.createElement("div");
-                buttonContainer.className = "button-container";
 
                 trace.payload.buttons.forEach((button) => {
                     const buttonElement = document.createElement("button");
@@ -127,14 +119,9 @@ const initializeChatLogic = (apiKey, versionID) => {
         const text = userInput.value.trim();
         if (!text) return;
 
-        // Display the user message
         addUserBubble(text);
-
-        // Send the user's input to Voiceflow
         await interact({ type: "text", payload: text });
-
-        userInput.value = ""; // Clear input field
-        chatWindow.scrollTop = chatWindow.scrollHeight;
+        userInput.value = "";
     };
 
     document.getElementById("send-button").onclick = handleTextInput;
