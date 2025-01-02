@@ -136,7 +136,7 @@ span.material-symbols-rounded {
   margin-left: 0;
 }
 @keyframes animateDots {
-  0%,44% {
+  0%, 44% {
     transform: translateY(0px);
   }
   28% {
@@ -159,22 +159,38 @@ span.material-symbols-rounded {
   background: var(--outgoing-chat-bg);
   border-top: 1px solid var(--incoming-chat-border);
 }
+
+/* Center the text field area */
 .typing-container .typing-content {
   display: flex;
   max-width: 950px;
   width: 100%;
-  align-items: flex-end;
+  /* Ensure content is centered horizontally & vertically */
+  justify-content: center;
+  align-items: center;
 }
+
 .typing-container .typing-textarea {
+  /* Keep a maximum width so it doesn't stretch too wide */
+  max-width: 600px;
   width: 100%;
+  margin: 0 auto;
+
+  /* Maintain the existing layout */
   display: flex;
   position: relative;
+  align-items: center; /* vertically center the textarea and button */
 }
+
 .typing-textarea textarea {
   resize: none;
+  /* Let textarea stretch to fill available space */
+  flex: 1;
+
   height: 55px;
   width: 100%;
   border: none;
+  margin-right: 10px; /* add spacing for send button */
   padding: 15px 45px 15px 20px;
   color: var(--text-color);
   font-size: 1rem;
@@ -219,7 +235,7 @@ span.material-symbols-rounded {
   background: var(--icon-hover-bg);
 }
 
-/* Reponsive Media Query */
+/* Responsive Media Query */
 @media screen and (max-width: 600px) {
   .default-text h1 {
     font-size: 2.3rem;
