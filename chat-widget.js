@@ -1,110 +1,152 @@
-/* Updated CSS for user bubbles */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+// Chat Widget Initialization
+const createChatWidget = (config) => {
+  const { apiKey, versionID, containerID } = config;
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-}
+  if (!apiKey || !versionID) {
+    console.error("Missing API Key or Version ID. Please provide both.");
+    return;
+  }
 
-:root {
-  --text-color: #343541;
-  --icon-color: #ACACBE;
-  --icon-hover-bg: #5b5e71;
-  --placeholder-color: #6c6c6c; /* Dark grey for better visibility */
-  --outgoing-chat-bg: #FFFFFF; /* White chat background */
-  --incoming-chat-bg: #F7F7F8; /* Light grey incoming message background */
-  --outgoing-chat-border: #D9D9D9;
-  --incoming-chat-border: #D9D9D3;
-  --input-bg: #EDEDED; /* Light grey input field background */
-}
+  const container = document.getElementById(containerID);
+  if (!container) {
+    console.error(`Container with ID "${containerID}" not found!`);
+    return;
+  }
 
-body {
-  background: var(--outgoing-chat-bg);
-}
+  const widget = document.createElement("div");
+  widget.id = "chat-widget";
+  container.appendChild(widget);
 
-.chat-container {
-  overflow-y: auto;
-  max-height: 100vh;
-  padding-bottom: 150px;
-}
+  const chatWindow = document.createElement("div");
+  chatWindow.id = "chat-window";
+  chatWindow.classList.add("chat-container");
+  widget.appendChild(chatWindow);
 
-:where(.chat-container, textarea)::-webkit-scrollbar {
-  width: 6px;
-}
+  const typingContainer = document.createElement("div");
+  typingContainer.classList.add("typing-container");
+  widget.appendChild(typingContainer);
 
-:where(.chat-container, textarea)::-webkit-scrollbar-track {
-  background: var(--incoming-chat-bg);
-  border-radius: 25px;
-}
+  const typingContent = document.createElement("div");
+  typingContent.classList.add("typing-content");
+  typingContainer.appendChild(typingContent);
 
-:where(.chat-container, textarea)::-webkit-scrollbar-thumb {
-  background: var(--icon-color);
-  border-radius: 25px;
-}
+  const typingTextarea = document.createElement("div");
+  typingTextarea.classList.add("typing-textarea");
+  typingContent.appendChild(typingTextarea);
 
-.chat {
-  display: flex;
-  justify-content: flex-end;
-  padding: 10px;
-}
+  const userInput = document.createElement("textarea");
+  userInput.id = "user-input";
+  userInput.placeholder = "Type your message...";
+  typingTextarea.appendChild(userInput);
 
-.chat.outgoing {
-  background: var(--outgoing-chat-bg);
-  border: 1px solid var(--outgoing-chat-border);
-  border-radius: 12px;
-  max-width: 50%;
-  align-self: flex-end;
-  word-wrap: break-word;
-}
+  const sendButton = document.createElement("span");
+  sendButton.id = "send-button";
+  sendButton.innerHTML = "send";
+  typingTextarea.appendChild(sendButton);
 
-.chat.incoming {
-  background: var(--incoming-chat-bg);
-  border: 1px solid var(--incoming-chat-border);
-  border-radius: 12px;
-  max-width: 50%;
-  align-self: flex-start;
-  word-wrap: break-word;
-}
+  initializeChatLogic(apiKey, versionID);
+};
 
-.chat-content {
-  padding: 10px;
-}
+// Chat Logic Initialization
+const initializeChatLogic = (apiKey, versionID) => {
+  const userId = `user_${Math.random().toString(36).substr(2, 9)}`;
 
-.typing-container {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  display: flex;
-  padding: 20px 10px;
-  justify-content: center;
-  background: var(--outgoing-chat-bg);
-  border-top: 1px solid var(--incoming-chat-border);
-}
+  const interact = async (request) => {
+    try {
+      const response = await fetch(
+        `https://general-runtime.voiceflow.com/state/user/${userId}/interact`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: apiKey,
+            versionID,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ request }),
+        }
+      );
 
-.typing-textarea textarea {
-  flex: 1;
-  height: 55px;
-  border: none;
-  padding: 15px 20px;
-  background: var(--input-bg);
-  color: var(--text-color);
-  font-size: 1rem;
-  border-radius: 4px;
-  box-sizing: border-box;
-  width: 100%;
-}
+      const traces = await response.json();
+      handleTraces(traces);
+    } catch (error) {
+      console.error("Error interacting with Voiceflow:", error);
+    }
+  };
 
-.typing-textarea span#send-button {
-  flex-shrink: 0;
-  width: 55px;
-  height: 55px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--icon-hover-bg);
-  color: var(--text-color);
-  border-radius: 4px;
-  cursor: pointer;
-}
+  const handleTraces = (traces) => {
+    const chatWindow = document.getElementById("chat-window");
+    if (!chatWindow) return console.error("Chat window not found!");
+
+    traces.forEach((trace) => {
+      if (trace.type === "text") {
+        createBubble(trace.payload.message, "incoming");
+      } else if (trace.type === "choice") {
+        const buttonContainer = document.createElement("div");
+
+        trace.payload.buttons.forEach((button) => {
+          const buttonElement = document.createElement("button");
+          buttonElement.classList.add("choice-button");
+          buttonElement.innerText = button.name;
+          buttonElement.onclick = () => {
+            createBubble(button.name, "outgoing");
+            interact(button.request);
+          };
+
+          buttonContainer.appendChild(buttonElement);
+        });
+
+        chatWindow.appendChild(buttonContainer);
+      }
+    });
+
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  };
+
+  const createBubble = (text, type) => {
+    const chatWindow = document.getElementById("chat-window");
+    if (!chatWindow) return console.error("Chat window not found!");
+
+    const chatBubble = document.createElement("div");
+    chatBubble.classList.add("chat", type);
+
+    const chatContent = document.createElement("div");
+    chatContent.classList.add("chat-content");
+
+    const chatDetails = document.createElement("div");
+    chatDetails.classList.add("chat-details");
+
+    const message = document.createElement("p");
+    message.textContent = text;
+
+    chatDetails.appendChild(message);
+    chatContent.appendChild(chatDetails);
+    chatBubble.appendChild(chatContent);
+    chatWindow.appendChild(chatBubble);
+
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  };
+
+  const handleTextInput = async () => {
+    const userInputElem = document.getElementById("user-input");
+    const userInput = userInputElem.value.trim();
+    if (!userInput) return;
+
+    userInputElem.value = "";
+    createBubble(userInput, "outgoing");
+    await interact({ type: "text", payload: userInput });
+  };
+
+  document.getElementById("send-button").onclick = (event) => {
+    event.preventDefault();
+    handleTextInput();
+  };
+
+  document.getElementById("user-input").onkeydown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleTextInput();
+    }
+  };
+
+  interact({ type: "launch" });
+};
