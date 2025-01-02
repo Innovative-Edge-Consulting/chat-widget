@@ -1,10 +1,11 @@
 const handleTraces = (traces) => {
   const chatWindow = document.getElementById("chat-window");
-  if (!chatWindow) return console.error("Chat window not found!");
+  if (!chatWindow) {
+    console.error("Chat window not found!");
+    return;
+  }
 
   traces.forEach((trace) => {
-    console.log("Processing trace:", trace);
-
     if (trace.type === "text") {
       // Add typing animation
       const typingIndicator = document.createElement("div");
@@ -21,14 +22,13 @@ const handleTraces = (traces) => {
 
       typingIndicator.appendChild(typingContent);
       chatWindow.appendChild(typingIndicator);
-
       chatWindow.scrollTop = chatWindow.scrollHeight;
 
       setTimeout(() => {
-        if (chatWindow.contains(typingIndicator)) {
-          chatWindow.removeChild(typingIndicator);
-        }
+        // Remove typing indicator
+        chatWindow.removeChild(typingIndicator);
 
+        // Add assistant message
         const incomingChat = document.createElement("div");
         incomingChat.classList.add("chat", "incoming");
 
@@ -45,11 +45,10 @@ const handleTraces = (traces) => {
         chatContent.appendChild(chatDetails);
         incomingChat.appendChild(chatContent);
         chatWindow.appendChild(incomingChat);
-
         chatWindow.scrollTop = chatWindow.scrollHeight;
-      }, 1500);
+      }, 1500); // Adjust delay as needed
     } else if (trace.type === "choice") {
-      console.log("Adding choice buttons.");
+      // Add choice buttons
       const buttonContainer = document.createElement("div");
 
       trace.payload.buttons.forEach((button) => {
@@ -73,7 +72,10 @@ const handleTraces = (traces) => {
 
 const addUserBubble = (text) => {
   const chatWindow = document.getElementById("chat-window");
-  if (!chatWindow) return console.error("Chat window not found!");
+  if (!chatWindow) {
+    console.error("Chat window not found!");
+    return;
+  }
 
   const outgoingChat = document.createElement("div");
   outgoingChat.classList.add("chat", "outgoing");
