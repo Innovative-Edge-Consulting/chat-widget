@@ -1,6 +1,5 @@
 /* Import Google font - Poppins */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
-
 * {
   margin: 0;
   padding: 0;
@@ -18,8 +17,6 @@
   --outgoing-chat-border: #343541;
   --incoming-chat-border: #444654;
 }
-
-/* Light mode variables (optional) */
 .light-mode {
   --text-color: #343541;
   --icon-color: #a9a9bc;
@@ -41,7 +38,6 @@ body {
   max-height: 100vh;
   padding-bottom: 150px;
 }
-
 :where(.chat-container, textarea)::-webkit-scrollbar {
   width: 6px;
 }
@@ -54,7 +50,7 @@ body {
   border-radius: 25px;
 }
 
-/* Default text placeholder area */
+/* Default placeholders */
 .default-text {
   display: flex;
   align-items: center;
@@ -73,7 +69,7 @@ body {
   font-size: 1.1rem;
 }
 
-/* Chat bubbles */
+/* Chat messages */
 .chat-container .chat {
   padding: 25px 10px;
   display: flex;
@@ -88,15 +84,12 @@ body {
   background: var(--incoming-chat-bg);
   border: 1px solid var(--incoming-chat-border);
 }
-
 .chat .chat-content {
   display: flex;
-  max-width: 1200px;
   width: 100%;
   align-items: flex-start;
   justify-content: space-between;
 }
-
 span.material-symbols-rounded {
   user-select: none;
   cursor: pointer;
@@ -110,7 +103,6 @@ span.material-symbols-rounded {
 .chat:hover .chat-content:not(:has(.typing-animation), :has(.error)) span {
   visibility: visible;
 }
-
 .chat .chat-details {
   display: flex;
   align-items: center;
@@ -132,8 +124,6 @@ span.material-symbols-rounded {
 .chat .chat-details p.error {
   color: #e55865;
 }
-
-/* Typing (dot) animation */
 .chat .typing-animation {
   padding-left: 25px;
   display: inline-flex;
@@ -151,7 +141,7 @@ span.material-symbols-rounded {
   margin-left: 0;
 }
 @keyframes animateDots {
-  0%, 44% {
+  0%,44% {
     transform: translateY(0px);
   }
   28% {
@@ -174,60 +164,49 @@ span.material-symbols-rounded {
   background: var(--outgoing-chat-bg);
   border-top: 1px solid var(--incoming-chat-border);
 }
-
-/* Center text field area */
 .typing-container .typing-content {
   display: flex;
-  max-width: 950px;
+  /* Removed max-width: 950px; to allow full width usage */
   width: 100%;
-  justify-content: center;
-  align-items: center;
+  align-items: flex-end; /* same as your snippet */
 }
-
-/* Limit to 600px wide and center it */
 .typing-container .typing-textarea {
-  max-width: 600px;
   width: 100%;
-  margin: 0 auto;
   display: flex;
   position: relative;
-  align-items: center;
 }
 
-/* Key override: reduce left padding from 20px to 10px */
+/* Symmetrical left/right padding instead of 20px / 45px */
 .typing-textarea textarea {
-  flex: 1 !important;
-  padding: 15px 45px 15px 10px !important; 
-  margin-right: 10px !important;
-  border: none !important;
-  height: 55px !important;
-  color: var(--text-color) !important;
-  font-size: 1rem !important;
-  border-radius: 4px !important;
+  resize: none;
+  height: 55px;
+  width: 100%;
+  border: none;
+  padding: 15px 20px; /* top-bottom:15, left-right:20 */
+  color: var(--text-color);
+  font-size: 1rem;
+  border-radius: 4px;
   max-height: 250px;
   overflow-y: auto;
-  background: var(--incoming-chat-bg) !important;
-  outline: 1px solid var(--incoming-chat-border) !important;
+  background: var(--incoming-chat-bg);
+  outline: 1px solid var(--incoming-chat-border);
 }
 .typing-textarea textarea::placeholder {
-  color: var(--placeholder-color) !important;
+  color: var(--placeholder-color);
 }
 
-/* Send button sizing */
 .typing-content span {
-  width: 55px !important;
-  height: 55px !important;
+  width: 55px;
+  height: 55px;
   display: flex;
   border-radius: 4px;
   font-size: 1.35rem;
   align-items: center;
   justify-content: center;
-  color: var(--icon-color) !important;
+  color: var(--icon-color);
 }
-
-/* Absolutely positioned inside the .typing-textarea */
 .typing-textarea span {
-  position: absolute !important;
+  position: absolute;
   right: 0;
   bottom: 0;
   visibility: hidden;
@@ -236,7 +215,6 @@ span.material-symbols-rounded {
   visibility: visible;
 }
 
-/* Additional controls (if any) */
 .typing-controls {
   display: flex;
 }
@@ -250,7 +228,7 @@ span.material-symbols-rounded {
   background: var(--icon-hover-bg);
 }
 
-/* Responsive adjustments */
+/* Responsive tweaks */
 @media screen and (max-width: 600px) {
   .default-text h1 {
     font-size: 2.3rem;
@@ -275,12 +253,12 @@ span.material-symbols-rounded {
     padding: 15px 10px;
   }
   .typing-textarea textarea {
-    height: 45px !important;
-    padding: 10px 40px 10px 10px !important;
+    height: 45px;
+    padding: 10px 20px; /* keep symmetrical even on mobile */
   }
   .typing-content span {
-    height: 45px !important;
-    width: 45px !important;
+    height: 45px;
+    width: 45px;
     margin-left: 5px;
   }
   span.material-symbols-rounded {
