@@ -1,5 +1,6 @@
 /* Import Google font - Poppins */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -17,6 +18,7 @@
   --outgoing-chat-border: #343541;
   --incoming-chat-border: #444654;
 }
+
 .light-mode {
   --text-color: #343541;
   --icon-color: #a9a9bc;
@@ -32,7 +34,7 @@ body {
   background: var(--outgoing-chat-bg);
 }
 
-/* Chat container */
+/* Chats container styling */
 .chat-container {
   overflow-y: auto;
   max-height: 100vh;
@@ -50,7 +52,6 @@ body {
   border-radius: 25px;
 }
 
-/* Default placeholders */
 .default-text {
   display: flex;
   align-items: center;
@@ -69,7 +70,6 @@ body {
   font-size: 1.1rem;
 }
 
-/* Chat messages */
 .chat-container .chat {
   padding: 25px 10px;
   display: flex;
@@ -153,7 +153,7 @@ span.material-symbols-rounded {
   }
 }
 
-/* Typing container at bottom */
+/* Typing container styling */
 .typing-container {
   position: fixed;
   bottom: 0;
@@ -164,25 +164,30 @@ span.material-symbols-rounded {
   background: var(--outgoing-chat-bg);
   border-top: 1px solid var(--incoming-chat-border);
 }
+
+/* Restrict the chat input area to 600px wide and center it */
 .typing-container .typing-content {
   display: flex;
-  /* Removed max-width: 950px; to allow full width usage */
+  max-width: 600px;   /* <-- The crucial limit to prevent overflow */
   width: 100%;
-  align-items: flex-end; /* same as your snippet */
+  margin: 0 auto;     /* center horizontally within the body */
+  align-items: flex-end;
 }
+
 .typing-container .typing-textarea {
   width: 100%;
   display: flex;
   position: relative;
 }
 
-/* Symmetrical left/right padding instead of 20px / 45px */
+/* Symmetrical left/right padding to keep text centered in the textarea */
 .typing-textarea textarea {
   resize: none;
   height: 55px;
   width: 100%;
   border: none;
-  padding: 15px 20px; /* top-bottom:15, left-right:20 */
+  /* top-bottom: 15px, left-right: 20px */
+  padding: 15px 20px;
   color: var(--text-color);
   font-size: 1rem;
   border-radius: 4px;
@@ -205,6 +210,7 @@ span.material-symbols-rounded {
   justify-content: center;
   color: var(--icon-color);
 }
+
 .typing-textarea span {
   position: absolute;
   right: 0;
@@ -228,7 +234,7 @@ span.material-symbols-rounded {
   background: var(--icon-hover-bg);
 }
 
-/* Responsive tweaks */
+/* Responsive Media Query */
 @media screen and (max-width: 600px) {
   .default-text h1 {
     font-size: 2.3rem;
@@ -254,7 +260,7 @@ span.material-symbols-rounded {
   }
   .typing-textarea textarea {
     height: 45px;
-    padding: 10px 20px; /* keep symmetrical even on mobile */
+    padding: 10px 20px;
   }
   .typing-content span {
     height: 45px;
