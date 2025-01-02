@@ -1,3 +1,4 @@
+// Chat Widget Initialization
 const createChatWidget = (config) => {
     const { apiKey, versionID, containerID } = config;
 
@@ -6,48 +7,81 @@ const createChatWidget = (config) => {
         return;
     }
 
+    // Get the parent container
     const container = document.getElementById(containerID);
     if (!container) {
         console.error(`Container with ID "${containerID}" not found!`);
         return;
     }
 
-    // Create main widget container
+    // Create the main widget container
     const widget = document.createElement("div");
     widget.id = "chat-widget";
-    widget.className = "chat-container"; // Matches the CSS chat-container class
+    widget.style.position = "relative"; // Position for proper layout
+    widget.style.margin = "0 auto"; // Center the widget horizontally
+    widget.style.width = "100%";
+    widget.style.maxWidth = "500px"; // Maximum width for larger screens
+    widget.style.height = "100%";
+    widget.style.display = "flex";
+    widget.style.flexDirection = "column";
+    widget.style.backgroundColor = "#FFFFFF";
+    widget.style.boxSizing = "border-box"; // Include padding in width/height calculations
     container.appendChild(widget);
 
     // Create chat window
     const chatWindow = document.createElement("div");
     chatWindow.id = "chat-window";
-    chatWindow.className = "chat-window"; // Matches the CSS chat-window class
+    chatWindow.style.flex = "1"; // Allow dynamic resizing
+    chatWindow.style.overflowY = "auto"; // Enable scrolling
+    chatWindow.style.padding = "10px";
+    chatWindow.style.backgroundColor = "#FFFFFF";
+    chatWindow.style.boxSizing = "border-box"; // Include padding in size
     widget.appendChild(chatWindow);
 
     // Create input area
     const inputArea = document.createElement("div");
     inputArea.id = "input-area";
-    inputArea.className = "typing-container"; // Matches the CSS typing-container class
+    inputArea.style.position = "relative"; // Keep input field aligned
+    inputArea.style.width = "100%";
+    inputArea.style.maxWidth = "500px"; // Match widget width
+    inputArea.style.margin = "0 auto"; // Center input field
+    inputArea.style.display = "flex";
+    inputArea.style.alignItems = "center";
+    inputArea.style.padding = "10px";
+    inputArea.style.backgroundColor = "#F9F9F9";
+    inputArea.style.boxShadow = "0px -2px 5px rgba(0,0,0,0.1)"; // Shadow for separation
     widget.appendChild(inputArea);
 
     const userInput = document.createElement("input");
     userInput.id = "user-input";
     userInput.type = "text";
     userInput.placeholder = "Type your message...";
-    userInput.className = "typing-textarea"; // Matches the CSS typing-textarea class
+    userInput.style.flex = "1";
+    userInput.style.border = "1px solid #CCC";
+    userInput.style.borderRadius = "5px";
+    userInput.style.padding = "10px";
     inputArea.appendChild(userInput);
 
     // Create send button
     const sendButton = document.createElement("button");
     sendButton.id = "send-button";
     sendButton.innerHTML = "&#9654;"; // Unicode for right-pointing arrow
-    sendButton.className = "typing-controls"; // Matches the CSS typing-controls class
+    sendButton.style.marginLeft = "10px";
+    sendButton.style.padding = "10px";
+    sendButton.style.border = "none";
+    sendButton.style.borderRadius = "50%";
+    sendButton.style.backgroundColor = "#007AFF";
+    sendButton.style.color = "#FFF";
+    sendButton.style.cursor = "pointer";
+    sendButton.style.width = "40px";
+    sendButton.style.height = "40px";
     inputArea.appendChild(sendButton);
 
     // Initialize Chat Logic
     initializeChatLogic(apiKey, versionID);
 };
 
+// Chat Logic Initialization (unchanged from previous script)
 const initializeChatLogic = (apiKey, versionID) => {
     const userId = `user_${Math.random().toString(36).substr(2, 9)}`;
     let activeChoices = [];
@@ -80,23 +114,38 @@ const initializeChatLogic = (apiKey, versionID) => {
         traces.forEach((trace) => {
             if (trace.type === "text") {
                 const message = document.createElement("div");
-                message.className = "assistant-bubble"; // Matches the CSS assistant-bubble class
+                message.className = "assistant-bubble";
+                message.style.backgroundColor = "#E5E5EA";
+                message.style.color = "#000";
+                message.style.padding = "10px 15px";
+                message.style.margin = "5px 10px 5px 20px";
+                message.style.borderRadius = "20px";
+                message.style.maxWidth = "70%";
+                message.style.alignSelf = "flex-start";
                 message.innerText = trace.payload.message;
                 chatWindow.appendChild(message);
             } else if (trace.type === "choice") {
                 const buttonContainer = document.createElement("div");
-                buttonContainer.className = "button-container"; // Matches the CSS button-container class
+                buttonContainer.className = "button-container";
 
                 trace.payload.buttons.forEach((button) => {
                     const buttonElement = document.createElement("button");
-                    buttonElement.className = "choice-button"; // Matches the CSS choice-button class
+                    buttonElement.className = "choice-button";
                     buttonElement.innerText = button.name;
                     buttonElement.onclick = () => {
                         addUserBubble(button.name);
                         interact(button.request);
                     };
 
+                    buttonElement.style.padding = "10px 15px";
+                    buttonElement.style.margin = "2px 5px 2px 20px";
+                    buttonElement.style.borderRadius = "25px";
+                    buttonElement.style.border = "1px solid #007AFF";
+                    buttonElement.style.backgroundColor = "#FFFFFF";
+                    buttonElement.style.color = "#007AFF";
+                    buttonElement.style.cursor = "pointer";
                     buttonContainer.appendChild(buttonElement);
+
                     activeChoices.push({ label: button.name.toLowerCase(), request: button.request });
                 });
 
@@ -112,7 +161,18 @@ const initializeChatLogic = (apiKey, versionID) => {
         if (!chatWindow) return console.error("Chat window not found!");
 
         const userMessage = document.createElement("div");
-        userMessage.className = "user-bubble"; // Matches the CSS user-bubble class
+        userMessage.className = "user-bubble";
+
+        userMessage.style.backgroundColor = "#007AFF";
+        userMessage.style.color = "#FFF";
+        userMessage.style.padding = "10px 15px";
+        userMessage.style.margin = "5px 0 5px auto";
+        userMessage.style.borderRadius = "15px";
+        userMessage.style.maxWidth = "50%";
+        userMessage.style.width = "fit-content";
+        userMessage.style.wordBreak = "break-word";
+        userMessage.style.textAlign = "left";
+
         userMessage.innerText = message;
         chatWindow.appendChild(userMessage);
 
@@ -120,16 +180,26 @@ const initializeChatLogic = (apiKey, versionID) => {
     };
 
     const handleTextInput = async () => {
-        const userInput = document.getElementById("user-input");
-        const text = userInput.value.trim();
-        if (!text) return;
+        const userInput = document.getElementById("user-input").value.trim();
+        if (!userInput) return;
 
-        addUserBubble(text);
-        await interact({ type: "text", payload: text });
-        userInput.value = "";
+        const matchedChoice = activeChoices.find(choice => choice.label === userInput.toLowerCase());
+        if (matchedChoice) {
+            addUserBubble(matchedChoice.label);
+            await interact(matchedChoice.request);
+        } else {
+            addUserBubble(userInput);
+            await interact({ type: "text", payload: userInput });
+        }
+
+        document.getElementById("user-input").value = "";
     };
 
-    document.getElementById("send-button").onclick = handleTextInput;
+    document.getElementById("send-button").onclick = (event) => {
+        event.preventDefault();
+        handleTextInput();
+    };
+
     document.getElementById("user-input").onkeydown = (event) => {
         if (event.key === "Enter") {
             event.preventDefault();
