@@ -1,10 +1,69 @@
+/* Import Google font - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+:root {
+  --text-color: #343541;
+  --icon-color: #ACACBE;
+  --icon-hover-bg: #5b5e71;
+  --placeholder-color: #6c6c6c;
+  --outgoing-chat-bg: #FFFFFF;
+  --incoming-chat-bg: #F7F7F8;
+  --input-bg: #EDEDED;
+}
+
+body {
+  background: var(--outgoing-chat-bg);
+}
+
+/* Chat container styling */
+.chat-container {
+  overflow-y: auto;
+  max-height: 100vh;
+  padding-bottom: 150px;
+}
+
+.chat-container .chat {
+  padding: 15px 10px;
+  display: flex;
+  justify-content: flex-start;
+  color: var(--text-color);
+}
+
+.chat-container .chat.outgoing {
+  justify-content: flex-end;
+}
+
+.chat-container .chat .chat-content {
+  max-width: 70%;
+}
+
+.chat-container .chat .chat-details p {
+  white-space: pre-wrap;
+  font-size: 1rem;
+  padding: 10px;
+  border-radius: 8px;
+  background: var(--incoming-chat-bg);
+  word-break: break-word;
+}
+
+.chat-container .chat.outgoing .chat-details p {
+  background: var(--input-bg);
+}
+
 /* Typing animation */
 .typing-animation {
   display: flex;
   align-items: center;
   padding: 0 10px;
-  max-width: 50%; /* Prevent overflow */
 }
+
 .typing-animation .dot {
   height: 8px;
   width: 8px;
@@ -13,9 +72,11 @@
   margin: 0 3px;
   animation: typing 1.5s infinite;
 }
+
 .typing-animation .dot:nth-child(2) {
   animation-delay: 0.2s;
 }
+
 .typing-animation .dot:nth-child(3) {
   animation-delay: 0.4s;
 }
@@ -27,6 +88,50 @@
   40% {
     transform: scale(1);
   }
+}
+
+/* Typing container */
+.typing-container {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  padding: 20px 10px;
+  justify-content: center;
+  background: var(--outgoing-chat-bg);
+  border-top: 1px solid var(--incoming-chat-border);
+}
+
+.typing-container .typing-content {
+  display: flex;
+  width: 100%;
+  max-width: 100vw;
+  align-items: flex-end;
+}
+
+.typing-container .typing-textarea textarea {
+  flex: 1;
+  height: 55px;
+  padding: 15px 20px;
+  border: none;
+  border-radius: 4px;
+  background: var(--input-bg);
+  color: var(--text-color);
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.typing-container .typing-textarea span#send-button {
+  flex-shrink: 0;
+  width: 55px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--icon-hover-bg);
+  color: var(--text-color);
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 /* Choice buttons */
@@ -41,6 +146,7 @@
   cursor: pointer;
   transition: background-color 0.2s, color 0.2s;
 }
+
 .choice-button:hover {
   background-color: var(--icon-hover-bg);
   color: #fff;
