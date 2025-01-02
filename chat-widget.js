@@ -19,6 +19,7 @@ const createChatWidget = (config) => {
     widget.id = "chat-widget";
     widget.style.display = "flex";
     widget.style.flexDirection = "column";
+    widget.style.position = "relative"; // Ensure input field is positioned correctly
     widget.style.width = "100%";
     widget.style.height = "100%";
     widget.style.overflow = "hidden"; // Ensures no content spills out
@@ -28,7 +29,7 @@ const createChatWidget = (config) => {
     // Create chat window
     const chatWindow = document.createElement("div");
     chatWindow.id = "chat-window";
-    chatWindow.style.flex = "1";
+    chatWindow.style.flex = "1"; // Takes up remaining space above the input area
     chatWindow.style.overflowY = "scroll";
     chatWindow.style.padding = "10px";
     chatWindow.style.backgroundColor = "#FFFFFF";
@@ -37,7 +38,10 @@ const createChatWidget = (config) => {
     // Create input area
     const inputArea = document.createElement("div");
     inputArea.style.display = "flex";
+    inputArea.style.position = "sticky"; // Keeps the input area fixed
+    inputArea.style.bottom = "0"; // Aligns input at the bottom
     inputArea.style.padding = "10px";
+    inputArea.style.backgroundColor = "#F9F9F9"; // Background for input area
     widget.appendChild(inputArea);
 
     const userInput = document.createElement("input");
