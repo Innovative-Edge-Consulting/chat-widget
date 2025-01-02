@@ -17,37 +17,37 @@ const createChatWidget = (config) => {
     // Create the main widget container
     const widget = document.createElement("div");
     widget.id = "chat-widget";
+    widget.style.position = "relative"; // Allows positioning within the container
+    widget.style.margin = "0 auto"; // Center the widget
+    widget.style.maxWidth = "500px"; // Match desired maximum width
+    widget.style.height = "100%";
     widget.style.display = "flex";
     widget.style.flexDirection = "column";
-    widget.style.width = "100%";
-    widget.style.height = "100%";
-    widget.style.position = "relative"; // Properly contain children
-    widget.style.overflow = "hidden"; // Prevent overflow outside widget
     widget.style.backgroundColor = "#FFFFFF";
     container.appendChild(widget);
 
     // Create chat window
     const chatWindow = document.createElement("div");
     chatWindow.id = "chat-window";
-    chatWindow.style.flex = "1"; // Allow dynamic height growth
+    chatWindow.style.flex = "1"; // Allows chat window to expand and fill space
     chatWindow.style.overflowY = "auto"; // Scrollable for long conversations
     chatWindow.style.padding = "10px";
     chatWindow.style.backgroundColor = "#FFFFFF";
-    chatWindow.style.boxSizing = "border-box"; // Ensure proper sizing
     widget.appendChild(chatWindow);
 
     // Create input area
     const inputArea = document.createElement("div");
     inputArea.id = "input-area";
-    inputArea.style.position = "relative"; // Adjust within widget
+    inputArea.style.position = "absolute";
     inputArea.style.bottom = "0";
-    inputArea.style.width = "100%";
+    inputArea.style.width = "100%"; // Match widget width
+    inputArea.style.maxWidth = "500px"; // Match desired maximum width
     inputArea.style.display = "flex";
     inputArea.style.alignItems = "center";
     inputArea.style.padding = "10px";
     inputArea.style.backgroundColor = "#F9F9F9";
     inputArea.style.boxShadow = "0px -2px 5px rgba(0,0,0,0.1)"; // Shadow for separation
-    widget.appendChild(inputArea);
+    container.appendChild(inputArea);
 
     const userInput = document.createElement("input");
     userInput.id = "user-input";
@@ -70,15 +70,15 @@ const createChatWidget = (config) => {
     sendButton.style.backgroundColor = "#007AFF";
     sendButton.style.color = "#FFF";
     sendButton.style.cursor = "pointer";
-    sendButton.style.width = "40px";
-    sendButton.style.height = "40px";
+    sendButton.style.width = "40px"; // Circular size
+    sendButton.style.height = "40px"; // Circular size
     inputArea.appendChild(sendButton);
 
     // Initialize Chat Logic
     initializeChatLogic(apiKey, versionID);
 };
 
-// Chat Logic Initialization
+// Chat Logic Initialization (unchanged from previous working script)
 const initializeChatLogic = (apiKey, versionID) => {
     const userId = `user_${Math.random().toString(36).substr(2, 9)}`;
     let activeChoices = [];
