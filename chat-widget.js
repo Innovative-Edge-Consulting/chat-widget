@@ -1,211 +1,235 @@
 // Chat Widget Initialization
 const createChatWidget = (config) => {
-    const { apiKey, versionID, containerID } = config;
+  const { apiKey, versionID, containerID } = config;
 
-    if (!apiKey || !versionID) {
-        console.error("Missing API Key or Version ID. Please provide both.");
-        return;
-    }
+  if (!apiKey || !versionID) {
+    console.error("Missing API Key or Version ID. Please provide both.");
+    return;
+  }
 
-    // Get the parent container
-    const container = document.getElementById(containerID);
-    if (!container) {
-        console.error(`Container with ID "${containerID}" not found!`);
-        return;
-    }
+  // Get the parent container
+  const container = document.getElementById(containerID);
+  if (!container) {
+    console.error(`Container with ID "${containerID}" not found!`);
+    return;
+  }
 
-    // Create the main widget container
-    const widget = document.createElement("div");
-    widget.id = "chat-widget";
-    widget.style.position = "relative"; // Position for proper layout
-    widget.style.margin = "0 auto"; // Center the widget horizontally
-    widget.style.width = "100%";
-    widget.style.maxWidth = "500px"; // Maximum width for larger screens
-    widget.style.height = "100%";
-    widget.style.display = "flex";
-    widget.style.flexDirection = "column";
-    widget.style.backgroundColor = "#FFFFFF";
-    widget.style.boxSizing = "border-box"; // Include padding in width/height calculations
-    container.appendChild(widget);
+  // Create the main widget container
+  const widget = document.createElement("div");
+  widget.id = "chat-widget";
+  // You can optionally add a theme class like `light-mode` if you want:
+  // widget.classList.add("light-mode");
+  container.appendChild(widget);
 
-    // Create chat window
-    const chatWindow = document.createElement("div");
-    chatWindow.id = "chat-window";
-    chatWindow.style.flex = "1"; // Allow dynamic resizing
-    chatWindow.style.overflowY = "auto"; // Enable scrolling
-    chatWindow.style.padding = "10px";
-    chatWindow.style.backgroundColor = "#FFFFFF";
-    chatWindow.style.boxSizing = "border-box"; // Include padding in size
-    widget.appendChild(chatWindow);
+  // Create the chat window (the scrolling area)
+  // Map this to your `.chat-container` in CSS
+  const chatWindow = document.createElement("div");
+  chatWindow.id = "chat-window";
+  chatWindow.classList.add("chat-container");
+  widget.appendChild(chatWindow);
 
-    // Create input area
-    const inputArea = document.createElement("div");
-    inputArea.id = "input-area";
-    inputArea.style.position = "relative"; // Keep input field aligned
-    inputArea.style.width = "100%";
-    inputArea.style.maxWidth = "500px"; // Match widget width
-    inputArea.style.margin = "0 auto"; // Center input field
-    inputArea.style.display = "flex";
-    inputArea.style.alignItems = "center";
-    inputArea.style.padding = "10px";
-    inputArea.style.backgroundColor = "#F9F9F9";
-    inputArea.style.boxShadow = "0px -2px 5px rgba(0,0,0,0.1)"; // Shadow for separation
-    widget.appendChild(inputArea);
+  // Create the input area (mapped to `.typing-container` in CSS)
+  const typingContainer = document.createElement("div");
+  typingContainer.classList.add("typing-container");
+  widget.appendChild(typingContainer);
 
-    const userInput = document.createElement("input");
-    userInput.id = "user-input";
-    userInput.type = "text";
-    userInput.placeholder = "Type your message...";
-    userInput.style.flex = "1";
-    userInput.style.border = "1px solid #CCC";
-    userInput.style.borderRadius = "5px";
-    userInput.style.padding = "10px";
-    inputArea.appendChild(userInput);
+  // Create the "typing-content" container
+  const typingContent = document.createElement("div");
+  typingContent.classList.add("typing-content");
+  typingContainer.appendChild(typingContent);
 
-    // Create send button
-    const sendButton = document.createElement("button");
-    sendButton.id = "send-button";
-    sendButton.innerHTML = "&#9654;"; // Unicode for right-pointing arrow
-    sendButton.style.marginLeft = "10px";
-    sendButton.style.padding = "10px";
-    sendButton.style.border = "none";
-    sendButton.style.borderRadius = "50%";
-    sendButton.style.backgroundColor = "#007AFF";
-    sendButton.style.color = "#FFF";
-    sendButton.style.cursor = "pointer";
-    sendButton.style.width = "40px";
-    sendButton.style.height = "40px";
-    inputArea.appendChild(sendButton);
+  // Create the "typing-textarea" container, which will hold our input
+  const typingTextarea = document.createElement("div");
+  typingTextarea.classList.add("typing-textarea");
+  typingContent.appendChild(typingTextarea);
 
-    // Initialize Chat Logic
-    initializeChatLogic(apiKey, versionID);
+  // Create the user input
+  const userInput = document.createElement("textarea");
+  userInput.id = "user-input";
+  userInput.placeholder = "Type your message...";
+  typingTextarea.appendChild(userInput);
+
+  // Create a send button
+  const sendButton = document.createElement("span");
+  sendButton.id = "send-button";
+  // Using Material Symbols or any icon set you want
+  // you can also use an HTML entity or an actual icon
+  sendButton.innerHTML = "send"; // or: "&#9654;";
+  typingTextarea.appendChild(sendButton);
+
+  // Optionally, you could create a separate controls area if you have more buttons
+  // For now, we only have one button (send)
+
+  // Initialize Chat Logic
+  initializeChatLogic(apiKey, versionID);
 };
 
-// Chat Logic Initialization (unchanged from previous script)
+// Chat Logic Initialization
 const initializeChatLogic = (apiKey, versionID) => {
-    const userId = `user_${Math.random().toString(36).substr(2, 9)}`;
-    let activeChoices = [];
+  const userId = `user_${Math.random().toString(36).substr(2, 9)}`;
+  let activeChoices = [];
 
-    const interact = async (request) => {
-        try {
-            const response = await fetch(`https://general-runtime.voiceflow.com/state/user/${userId}/interact`, {
-                method: "POST",
-                headers: {
-                    Authorization: apiKey,
-                    versionID,
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ request }),
-            });
-
-            const traces = await response.json();
-            handleTraces(traces);
-        } catch (error) {
-            console.error("Error interacting with Voiceflow:", error);
+  const interact = async (request) => {
+    try {
+      const response = await fetch(
+        `https://general-runtime.voiceflow.com/state/user/${userId}/interact`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: apiKey,
+            versionID,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ request }),
         }
-    };
+      );
 
-    const handleTraces = (traces) => {
-        const chatWindow = document.getElementById("chat-window");
-        if (!chatWindow) return console.error("Chat window not found!");
+      const traces = await response.json();
+      handleTraces(traces);
+    } catch (error) {
+      console.error("Error interacting with Voiceflow:", error);
+    }
+  };
 
-        activeChoices = [];
+  const handleTraces = (traces) => {
+    const chatWindow = document.getElementById("chat-window");
+    if (!chatWindow) return console.error("Chat window not found!");
 
-        traces.forEach((trace) => {
-            if (trace.type === "text") {
-                const message = document.createElement("div");
-                message.className = "assistant-bubble";
-                message.style.backgroundColor = "#E5E5EA";
-                message.style.color = "#000";
-                message.style.padding = "10px 15px";
-                message.style.margin = "5px 10px 5px 20px";
-                message.style.borderRadius = "20px";
-                message.style.maxWidth = "70%";
-                message.style.alignSelf = "flex-start";
-                message.innerText = trace.payload.message;
-                chatWindow.appendChild(message);
-            } else if (trace.type === "choice") {
-                const buttonContainer = document.createElement("div");
-                buttonContainer.className = "button-container";
+    // Clear active choices on each new set of messages
+    activeChoices = [];
 
-                trace.payload.buttons.forEach((button) => {
-                    const buttonElement = document.createElement("button");
-                    buttonElement.className = "choice-button";
-                    buttonElement.innerText = button.name;
-                    buttonElement.onclick = () => {
-                        addUserBubble(button.name);
-                        interact(button.request);
-                    };
+    traces.forEach((trace) => {
+      if (trace.type === "text") {
+        // Create an assistant message (incoming chat)
+        // sample CSS expects a structure like:
+        // <div class="chat incoming">
+        //   <div class="chat-content">
+        //     <div class="chat-details">
+        //       <p>message text here</p>
+        //     </div>
+        //   </div>
+        // </div>
+        const incomingChat = document.createElement("div");
+        incomingChat.classList.add("chat", "incoming");
 
-                    buttonElement.style.padding = "10px 15px";
-                    buttonElement.style.margin = "2px 5px 2px 20px";
-                    buttonElement.style.borderRadius = "25px";
-                    buttonElement.style.border = "1px solid #007AFF";
-                    buttonElement.style.backgroundColor = "#FFFFFF";
-                    buttonElement.style.color = "#007AFF";
-                    buttonElement.style.cursor = "pointer";
-                    buttonContainer.appendChild(buttonElement);
+        const chatContent = document.createElement("div");
+        chatContent.classList.add("chat-content");
 
-                    activeChoices.push({ label: button.name.toLowerCase(), request: button.request });
-                });
+        const chatDetails = document.createElement("div");
+        chatDetails.classList.add("chat-details");
 
-                chatWindow.appendChild(buttonContainer);
-            }
+        const message = document.createElement("p");
+        message.textContent = trace.payload.message;
+
+        // Append nested elements
+        chatDetails.appendChild(message);
+        chatContent.appendChild(chatDetails);
+        incomingChat.appendChild(chatContent);
+        chatWindow.appendChild(incomingChat);
+      } else if (trace.type === "choice") {
+        // Choice buttons
+        const buttonContainer = document.createElement("div");
+        // You may style this container with its own class, e.g. "button-container"
+        // or rely on your global `.chat-container` + something else.
+        buttonContainer.classList.add("button-container");
+
+        trace.payload.buttons.forEach((button) => {
+          const buttonElement = document.createElement("button");
+          buttonElement.classList.add("choice-button");
+          buttonElement.innerText = button.name;
+          buttonElement.onclick = () => {
+            addUserBubble(button.name);
+            interact(button.request);
+          };
+          buttonContainer.appendChild(buttonElement);
+
+          // Add to active choices for input matching
+          activeChoices.push({
+            label: button.name.toLowerCase(),
+            request: button.request,
+          });
         });
 
-        chatWindow.scrollTop = chatWindow.scrollHeight;
-    };
+        // You can insert this into the chat as an incoming block if you prefer
+        // For simplicity, we’ll just append the container directly:
+        chatWindow.appendChild(buttonContainer);
+      }
+    });
 
-    const addUserBubble = (message) => {
-        const chatWindow = document.getElementById("chat-window");
-        if (!chatWindow) return console.error("Chat window not found!");
+    // Scroll to bottom after messages
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  };
 
-        const userMessage = document.createElement("div");
-        userMessage.className = "user-bubble";
+  const addUserBubble = (text) => {
+    const chatWindow = document.getElementById("chat-window");
+    if (!chatWindow) return console.error("Chat window not found!");
 
-        userMessage.style.backgroundColor = "#007AFF";
-        userMessage.style.color = "#FFF";
-        userMessage.style.padding = "10px 15px";
-        userMessage.style.margin = "5px 0 5px auto";
-        userMessage.style.borderRadius = "15px";
-        userMessage.style.maxWidth = "50%";
-        userMessage.style.width = "fit-content";
-        userMessage.style.wordBreak = "break-word";
-        userMessage.style.textAlign = "left";
+    // Create user message (outgoing chat)
+    // Per sample CSS:
+    // <div class="chat outgoing">
+    //   <div class="chat-content">
+    //     <div class="chat-details">
+    //       <p>text</p>
+    //     </div>
+    //   </div>
+    // </div>
+    const outgoingChat = document.createElement("div");
+    outgoingChat.classList.add("chat", "outgoing");
 
-        userMessage.innerText = message;
-        chatWindow.appendChild(userMessage);
+    const chatContent = document.createElement("div");
+    chatContent.classList.add("chat-content");
 
-        chatWindow.scrollTop = chatWindow.scrollHeight;
-    };
+    const chatDetails = document.createElement("div");
+    chatDetails.classList.add("chat-details");
 
-    const handleTextInput = async () => {
-        const userInput = document.getElementById("user-input").value.trim();
-        if (!userInput) return;
+    const message = document.createElement("p");
+    message.textContent = text;
 
-        const matchedChoice = activeChoices.find(choice => choice.label === userInput.toLowerCase());
-        if (matchedChoice) {
-            addUserBubble(matchedChoice.label);
-            await interact(matchedChoice.request);
-        } else {
-            addUserBubble(userInput);
-            await interact({ type: "text", payload: userInput });
-        }
+    // Assemble
+    chatDetails.appendChild(message);
+    chatContent.appendChild(chatDetails);
+    outgoingChat.appendChild(chatContent);
+    chatWindow.appendChild(outgoingChat);
 
-        document.getElementById("user-input").value = "";
-    };
+    // Scroll to bottom
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  };
 
-    document.getElementById("send-button").onclick = (event) => {
-        event.preventDefault();
-        handleTextInput();
-    };
+  const handleTextInput = async () => {
+    const userInputElem = document.getElementById("user-input");
+    const userInput = userInputElem.value.trim();
+    if (!userInput) return;
 
-    document.getElementById("user-input").onkeydown = (event) => {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            handleTextInput();
-        }
-    };
+    // Match input with choice buttons
+    const matchedChoice = activeChoices.find(
+      (choice) => choice.label === userInput.toLowerCase()
+    );
 
-    interact({ type: "launch" });
+    if (matchedChoice) {
+      addUserBubble(matchedChoice.label);
+      await interact(matchedChoice.request);
+    } else {
+      addUserBubble(userInput);
+      await interact({ type: "text", payload: userInput });
+    }
+
+    userInputElem.value = "";
+  };
+
+  // Hook up send button
+  document.getElementById("send-button").onclick = (event) => {
+    event.preventDefault();
+    handleTextInput();
+  };
+
+  // Send on Enter
+  document.getElementById("user-input").onkeydown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleTextInput();
+    }
+  };
+
+  // Launch the conversation
+  interact({ type: "launch" });
 };
