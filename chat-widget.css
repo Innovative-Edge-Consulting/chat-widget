@@ -12,12 +12,12 @@
   --text-color: #343541;
   --icon-color: #ACACBE;
   --icon-hover-bg: #5b5e71;
-  --placeholder-color: #6c6c6c; /* Placeholder visible */
-  --outgoing-chat-bg: #FFFFFF; /* White chat background */
-  --incoming-chat-bg: #F7F7F8; /* Light grey for incoming messages */
+  --placeholder-color: #6c6c6c;
+  --outgoing-chat-bg: #FFFFFF;
+  --incoming-chat-bg: #F7F7F8;
   --outgoing-chat-border: #D9D9D9;
   --incoming-chat-border: #D9D9E3;
-  --input-bg: #EDEDED; /* Light grey input field */
+  --input-bg: #EDEDED;
 }
 
 body {
@@ -46,6 +46,24 @@ body {
 .chat-container .chat.incoming {
   background: var(--incoming-chat-bg);
   border: 1px solid var(--incoming-chat-border);
+}
+
+/* Choice buttons */
+.choice-button {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 5px;
+  border: 1px solid var(--text-color);
+  border-radius: 4px;
+  background-color: var(--incoming-chat-bg);
+  color: var(--text-color);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.choice-button:hover {
+  background-color: var(--icon-hover-bg);
+  color: #fff;
 }
 
 /* Input container styling */
@@ -80,13 +98,13 @@ body {
   padding: 15px 20px;
   border: none;
   border-radius: 4px;
-  background: var(--input-bg); /* Light grey */
+  background: var(--input-bg);
   color: var(--text-color);
   font-size: 1rem;
 }
 
 .typing-textarea textarea::placeholder {
-  color: var(--placeholder-color); /* Placeholder text color */
+  color: var(--placeholder-color);
 }
 
 .typing-textarea span#send-button {
