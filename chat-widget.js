@@ -15,32 +15,36 @@ const createChatWidget = (config) => {
     // Create main widget container
     const widget = document.createElement("div");
     widget.id = "chat-widget";
-    widget.className = "chat-container";
+    widget.className = "chat-container"; // Matches the CSS chat-container class
     container.appendChild(widget);
 
     // Create chat window
     const chatWindow = document.createElement("div");
     chatWindow.id = "chat-window";
-    chatWindow.className = "chat-window";
+    chatWindow.className = "chat-window"; // Matches the CSS chat-window class
     widget.appendChild(chatWindow);
 
     // Create input area
     const inputArea = document.createElement("div");
-    inputArea.className = "input-area";
+    inputArea.id = "input-area";
+    inputArea.className = "typing-container"; // Matches the CSS typing-container class
+    widget.appendChild(inputArea);
 
     const userInput = document.createElement("input");
     userInput.id = "user-input";
     userInput.type = "text";
     userInput.placeholder = "Type your message...";
+    userInput.className = "typing-textarea"; // Matches the CSS typing-textarea class
     inputArea.appendChild(userInput);
 
+    // Create send button
     const sendButton = document.createElement("button");
     sendButton.id = "send-button";
-    sendButton.innerHTML = "&#9654;";
+    sendButton.innerHTML = "&#9654;"; // Unicode for right-pointing arrow
+    sendButton.className = "typing-controls"; // Matches the CSS typing-controls class
     inputArea.appendChild(sendButton);
 
-    widget.appendChild(inputArea);
-
+    // Initialize Chat Logic
     initializeChatLogic(apiKey, versionID);
 };
 
@@ -76,15 +80,16 @@ const initializeChatLogic = (apiKey, versionID) => {
         traces.forEach((trace) => {
             if (trace.type === "text") {
                 const message = document.createElement("div");
-                message.className = "assistant-bubble";
+                message.className = "assistant-bubble"; // Matches the CSS assistant-bubble class
                 message.innerText = trace.payload.message;
                 chatWindow.appendChild(message);
             } else if (trace.type === "choice") {
                 const buttonContainer = document.createElement("div");
+                buttonContainer.className = "button-container"; // Matches the CSS button-container class
 
                 trace.payload.buttons.forEach((button) => {
                     const buttonElement = document.createElement("button");
-                    buttonElement.className = "choice-button";
+                    buttonElement.className = "choice-button"; // Matches the CSS choice-button class
                     buttonElement.innerText = button.name;
                     buttonElement.onclick = () => {
                         addUserBubble(button.name);
@@ -107,7 +112,7 @@ const initializeChatLogic = (apiKey, versionID) => {
         if (!chatWindow) return console.error("Chat window not found!");
 
         const userMessage = document.createElement("div");
-        userMessage.className = "user-bubble";
+        userMessage.className = "user-bubble"; // Matches the CSS user-bubble class
         userMessage.innerText = message;
         chatWindow.appendChild(userMessage);
 
