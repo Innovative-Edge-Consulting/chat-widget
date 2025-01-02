@@ -1,146 +1,102 @@
-// Chat Widget Initialization
-const createChatWidget = (config) => {
-  const { apiKey, versionID, containerID } = config;
+/* Import Google font - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
-  if (!apiKey || !versionID) {
-    console.error("Missing API Key or Version ID. Please provide both.");
-    return;
-  }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
 
-  const container = document.getElementById(containerID);
-  if (!container) {
-    console.error(`Container with ID "${containerID}" not found!`);
-    return;
-  }
+:root {
+  --text-color: #343541;
+  --icon-color: #ACACBE;
+  --icon-hover-bg: #5b5e71;
+  --placeholder-color: #6c6c6c;
+  --outgoing-chat-bg: #FFFFFF;
+  --incoming-chat-bg: #F7F7F8;
+  --outgoing-chat-border: #D9D9D9;
+  --incoming-chat-border: #D9D9E3;
+  --input-bg: #EDEDED;
+}
 
-  const widget = document.createElement("div");
-  widget.id = "chat-widget";
-  container.appendChild(widget);
+body {
+  background: var(--outgoing-chat-bg);
+}
 
-  const chatWindow = document.createElement("div");
-  chatWindow.id = "chat-window";
-  chatWindow.classList.add("chat-container");
-  widget.appendChild(chatWindow);
+/* Chat container styling */
+.chat-container {
+  overflow-y: auto;
+  max-height: 100vh;
+  padding-bottom: 150px;
+}
 
-  const typingContainer = document.createElement("div");
-  typingContainer.classList.add("typing-container");
-  widget.appendChild(typingContainer);
+.chat-container .chat {
+  padding: 25px 10px;
+  display: flex;
+  justify-content: center;
+  color: var(--text-color);
+}
 
-  const typingContent = document.createElement("div");
-  typingContent.classList.add("typing-content");
-  typingContainer.appendChild(typingContent);
+.chat-container .chat.outgoing {
+  background: var(--outgoing-chat-bg);
+  border: 1px solid var(--outgoing-chat-border);
+}
 
-  const typingTextarea = document.createElement("div");
-  typingTextarea.classList.add("typing-textarea");
-  typingContent.appendChild(typingTextarea);
+.chat-container .chat.incoming {
+  background: var(--incoming-chat-bg);
+  border: 1px solid var(--incoming-chat-border);
+}
 
-  const userInput = document.createElement("textarea");
-  userInput.id = "user-input";
-  userInput.placeholder = "Type your message...";
-  typingTextarea.appendChild(userInput);
+/* Input container styling */
+.typing-container {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  padding: 20px 10px;
+  justify-content: center;
+  background: var(--outgoing-chat-bg);
+  border-top: 1px solid var(--incoming-chat-border);
+}
 
-  const sendButton = document.createElement("span");
-  sendButton.id = "send-button";
-  sendButton.innerHTML = "send";
-  typingTextarea.appendChild(sendButton);
+.typing-container .typing-content {
+  display: flex;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  align-items: flex-end;
+}
 
-  initializeChatLogic(apiKey, versionID);
-};
+.typing-container .typing-textarea {
+  flex: 1;
+  display: flex;
+  position: relative;
+}
 
-// Chat Logic Initialization
-const initializeChatLogic = (apiKey, versionID) => {
-  const userId = `user_${Math.random().toString(36).substr(2, 9)}`;
-  let activeChoices = [];
+.typing-textarea textarea {
+  flex: 1;
+  height: 55px;
+  padding: 15px 20px;
+  border: none;
+  border-radius: 4px;
+  background: var(--input-bg);
+  color: var(--text-color);
+  font-size: 1rem;
+}
 
-  const interact = async (request) => {
-    try {
-      const response = await fetch(
-        `https://general-runtime.voiceflow.com/state/user/${userId}/interact`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: apiKey,
-            versionID,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ request }),
-        }
-      );
+.typing-textarea textarea::placeholder {
+  color: var(--placeholder-color);
+}
 
-      const traces = await response.json();
-      handleTraces(traces);
-    } catch (error) {
-      console.error("Error interacting with Voiceflow:", error);
-    }
-  };
-
-  const handleTraces = (traces) => {
-    const chatWindow = document.getElementById("chat-window");
-    if (!chatWindow) return console.error("Chat window not found!");
-
-    traces.forEach((trace) => {
-      if (trace.type === "text") {
-        const incomingChat = document.createElement("div");
-        incomingChat.classList.add("chat", "incoming");
-
-        const chatContent = document.createElement("div");
-        chatContent.classList.add("chat-content");
-
-        const chatDetails = document.createElement("div");
-        chatDetails.classList.add("chat-details");
-
-        const message = document.createElement("p");
-        message.textContent = trace.payload.message;
-
-        chatDetails.appendChild(message);
-        chatContent.appendChild(chatDetails);
-        incomingChat.appendChild(chatContent);
-        chatWindow.appendChild(incomingChat);
-      }
-    });
-
-    chatWindow.scrollTop = chatWindow.scrollHeight;
-  };
-
-  const handleTextInput = async () => {
-    const userInputElem = document.getElementById("user-input");
-    const userInput = userInputElem.value.trim();
-    if (!userInput) return;
-
-    const outgoingChat = document.createElement("div");
-    outgoingChat.classList.add("chat", "outgoing");
-
-    const chatContent = document.createElement("div");
-    chatContent.classList.add("chat-content");
-
-    const chatDetails = document.createElement("div");
-    chatDetails.classList.add("chat-details");
-
-    const message = document.createElement("p");
-    message.textContent = userInput;
-
-    chatDetails.appendChild(message);
-    chatContent.appendChild(chatDetails);
-    outgoingChat.appendChild(chatContent);
-    chatWindow.appendChild(outgoingChat);
-
-    userInputElem.value = "";
-    chatWindow.scrollTop = chatWindow.scrollHeight;
-
-    await interact({ type: "text", payload: userInput });
-  };
-
-  document.getElementById("send-button").onclick = (event) => {
-    event.preventDefault();
-    handleTextInput();
-  };
-
-  document.getElementById("user-input").onkeydown = (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      handleTextInput();
-    }
-  };
-
-  interact({ type: "launch" });
-};
+.typing-textarea span#send-button {
+  width: 55px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--icon-hover-bg);
+  color: var(--text-color);
+  border-radius: 4px;
+  cursor: pointer;
+}
