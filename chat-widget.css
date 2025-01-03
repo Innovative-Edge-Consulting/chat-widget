@@ -19,8 +19,8 @@
   --incoming-chat-border: #D9D9D3;
   --input-bg: #EDEDED;
   --scrollbar-color: transparent;
-  --button-bg: #007BFF;
-  --button-hover-bg: #0056b3;
+  --button-bg: #1a1a1a; /* Darker black/blue background */
+  --button-hover-bg: #333333; /* Slightly lighter black/blue on hover */
   --button-border-radius: 50%;
 }
 
@@ -89,8 +89,6 @@ body {
   position: fixed;
   bottom: 0;
   width: calc(100% - 20px); /* Subtract padding to avoid overflow */
-  max-width: 1200px; /* Ensure it doesn't overflow */
-  margin: 0 auto;
   padding: 20px 10px;
   justify-content: center;
   background: var(--outgoing-chat-bg);
@@ -101,6 +99,7 @@ body {
 .typing-content {
   display: flex;
   width: 100%;
+  max-width: 100%; /* Adjust to prevent overlap or scrollbars */
   align-items: flex-end;
 }
 
@@ -121,7 +120,7 @@ body {
   font-size: 1rem;
   border-radius: 4px;
   box-sizing: border-box; /* Ensures consistent dimensions */
-  margin-right: 10px; /* Ensure proper spacing */
+  margin-right: 10px; /* Proper spacing between textarea and button */
 }
 
 .typing-textarea textarea::placeholder {
@@ -139,46 +138,17 @@ body {
   color: var(--icon-color);
   border-radius: var(--button-border-radius);
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.3s ease;
   border: none;
+  font-size: 1.2rem;
 }
 
 .typing-textarea #send-button:hover {
   background: var(--button-hover-bg);
+  transform: scale(1.1); /* Subtle enlargement on hover */
 }
 
-/* Choice Buttons */
-.choice-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.choice-button {
-  display: inline-block;
-  padding: 10px 20px;
-  margin: 5px;
-  border: 1px solid var(--text-color);
-  border-radius: 4px;
-  background-color: var(--incoming-chat-bg);
-  color: var(--text-color);
-  cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
-}
-
-.choice-button:hover {
-  background-color: var(--icon-hover-bg);
-  color: #fff;
-}
-
-/* Utility Classes */
-.hidden {
-  display: none;
-}
-
-.flex-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.typing-textarea #send-button i {
+  font-size: 1.5rem; /* Adjust icon size */
+  color: var(--icon-color); /* Match button color */
 }
