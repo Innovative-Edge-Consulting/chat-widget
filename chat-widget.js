@@ -147,7 +147,8 @@ const initializeChatLogic = (apiKey, versionID) => {
   };
 
   const adjustScroll = () => {
-    window.scrollTo(0, document.body.scrollHeight);
+    const chatWindow = document.getElementById("chat-window");
+    chatWindow.scrollTop = chatWindow.scrollHeight;
   };
 
   const handleTextInput = async () => {
