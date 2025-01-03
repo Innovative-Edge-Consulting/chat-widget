@@ -27,13 +27,14 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow: hidden; /* Prevent extra scrolling from the body */
 }
 
 /* Chats container styling */
 .chat-container {
-  flex: 1; /* Allow chat to grow and fill available space */
-  overflow: visible; /* Remove internal scrolling */
-  padding: 10px; /* Add padding for aesthetics */
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
 }
 
 /* Chat bubble styling */
@@ -83,21 +84,20 @@ body {
 
 /* Typing container */
 .typing-container {
-  position: sticky;
-  bottom: 0; /* Stick to the bottom of the viewport */
+  position: fixed; /* Fix at the bottom of the screen */
+  bottom: 0;
   width: 100%;
   display: flex;
-  padding: 20px 10px;
-  justify-content: center;
+  padding: 15px 10px;
   background: var(--outgoing-chat-bg);
   border-top: 1px solid var(--incoming-chat-border);
+  z-index: 100; /* Ensure it remains above the chat content */
 }
 
 .typing-container .typing-content {
   display: flex;
   width: 100%;
   max-width: 100vw;
-  overflow-x: hidden;
   align-items: flex-end;
 }
 
