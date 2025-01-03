@@ -27,8 +27,8 @@ body {
 /* Chats container styling */
 .chat-container {
   overflow-y: auto;
-  max-height: 100vh;
-  padding-bottom: 150px;
+  max-height: calc(100vh - 80px); /* Adjust height to accommodate input field */
+  padding-bottom: 10px;
 }
 
 :where(.chat-container, textarea)::-webkit-scrollbar {
@@ -79,6 +79,15 @@ body {
 .chat .chat-content {
   display: flex;
   align-items: flex-start;
+}
+
+/* Assistant text styling */
+.assistant-text {
+  display: block;
+  font-size: 1.05rem;
+  color: var(--text-color);
+  padding: 5px 0;
+  word-wrap: break-word;
 }
 
 /* Typing container */
