@@ -140,7 +140,6 @@ body {
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease;
   border: none;
-  font-size: 1.2rem;
 }
 
 .typing-textarea #send-button:hover {
@@ -151,4 +150,40 @@ body {
 .typing-textarea #send-button i {
   font-size: 1.5rem; /* Adjust icon size */
   color: var(--icon-color); /* Match button color */
+}
+
+/* Choice Buttons */
+.choice-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.choice-button {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 5px;
+  border: 1px solid var(--text-color);
+  border-radius: 4px;
+  background-color: var(--incoming-chat-bg);
+  color: var(--text-color);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.choice-button:hover {
+  background-color: var(--icon-hover-bg);
+  color: #fff;
+}
+
+/* Utility Classes for Future Enhancements */
+.hidden {
+  display: none;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
