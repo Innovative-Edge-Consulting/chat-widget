@@ -10,7 +10,7 @@
 
 :root {
   --text-color: #343541;
-  --icon-color: #FFFFFF;
+  --icon-color: #ACACBE;
   --icon-hover-bg: #5b5e71;
   --placeholder-color: #6c6c6c;
   --outgoing-chat-bg: #FFFFFF;
@@ -19,9 +19,6 @@
   --incoming-chat-border: #D9D9D3;
   --input-bg: #EDEDED;
   --scrollbar-color: transparent;
-  --button-bg: #1a1a1a; /* Darker black/blue background */
-  --button-hover-bg: #333333; /* Slightly lighter black/blue on hover */
-  --button-border-radius: 50%;
 }
 
 body {
@@ -89,6 +86,8 @@ body {
   position: fixed;
   bottom: 0;
   width: calc(100% - 20px); /* Subtract padding to avoid overflow */
+  max-width: 1200px; /* Limit width for desktops */
+  margin: 0 auto; /* Center on larger screens */
   padding: 20px 10px;
   justify-content: center;
   background: var(--outgoing-chat-bg);
@@ -120,7 +119,7 @@ body {
   font-size: 1rem;
   border-radius: 4px;
   box-sizing: border-box; /* Ensures consistent dimensions */
-  margin-right: 10px; /* Proper spacing between textarea and button */
+  max-width: calc(100% - 55px); /* Ensure space for send button */
 }
 
 .typing-textarea textarea::placeholder {
@@ -134,22 +133,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--button-bg);
-  color: var(--icon-color);
-  border-radius: var(--button-border-radius);
+  background: var(--icon-hover-bg);
+  color: var(--text-color);
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-  border: none;
-}
-
-.typing-textarea #send-button:hover {
-  background: var(--button-hover-bg);
-  transform: scale(1.1); /* Subtle enlargement on hover */
-}
-
-.typing-textarea #send-button i {
-  font-size: 1.5rem; /* Adjust icon size */
-  color: var(--icon-color); /* Match button color */
 }
 
 /* Choice Buttons */
