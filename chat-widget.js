@@ -83,8 +83,9 @@ class ChatWidget {
           method: "POST",
           headers: {
             Authorization: this.apiKey,
-            versionID: this.versionID,
-            "Content-Type": "application/json",
+            "versionID": "production",
+            "accept": "application/json",
+            "content-type": "application/json",
           },
           body: JSON.stringify({ request }),
         }
@@ -92,7 +93,11 @@ class ChatWidget {
 
       const traces = await response.json();
       console.log("Received traces:", traces); // Debug log
-      this.handleTraces(traces);
+      if (traces && traces.length) {
+        this.handleTraces(traces);
+      } else {
+        console.warn("No traces received. Check Voiceflow configuration.");
+      }
     } catch (error) {
       console.error("Error interacting with Voiceflow:", error);
     }
@@ -104,6 +109,8 @@ class ChatWidget {
         this.createBubble(trace.payload.message, "incoming");
       } else if (trace.type === "choice") {
         this.createChoiceButtons(trace.payload.buttons);
+      } else {
+        console.log("Unhandled trace type:", trace);
       }
     });
     this.chatWindow.scrollTop = this.chatWindow.scrollHeight;
