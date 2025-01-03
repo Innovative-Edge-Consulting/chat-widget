@@ -1,3 +1,17 @@
+// Adjust chat container height dynamically
+const adjustChatHeight = () => {
+  const chatContainer = document.getElementById("chat-window");
+  const typingContainer = document.querySelector(".typing-container");
+
+  if (chatContainer && typingContainer) {
+    const viewportHeight = window.innerHeight;
+    const inputHeight = typingContainer.offsetHeight;
+
+    // Set the chat container height dynamically
+    chatContainer.style.height = `${viewportHeight - inputHeight}px`;
+  }
+};
+
 // Chat Widget Initialization
 const createChatWidget = (config) => {
   const { apiKey, versionID, containerID } = config;
@@ -45,6 +59,12 @@ const createChatWidget = (config) => {
   typingTextarea.appendChild(sendButton);
 
   initializeChatLogic(apiKey, versionID);
+
+  // Initial adjustment
+  adjustChatHeight();
+
+  // Adjust height on window resize
+  window.addEventListener("resize", adjustChatHeight);
 };
 
 // Chat Logic Initialization
