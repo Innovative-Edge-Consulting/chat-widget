@@ -31,18 +31,17 @@ body {
   padding-bottom: 150px;
 }
 
-:where(.chat-container, textarea)::-webkit-scrollbar {
-  width: 6px;
+.chat-container::-webkit-scrollbar {
+  width: 8px; /* Width of scrollbar */
 }
 
-:where(.chat-container, textarea)::-webkit-scrollbar-track {
-  background: var(--incoming-chat-bg);
-  border-radius: 25px;
+.chat-container::-webkit-scrollbar-thumb {
+  background: transparent; /* Transparent scrollbar */
+  border-radius: 4px;
 }
 
-:where(.chat-container, textarea)::-webkit-scrollbar-thumb {
-  background: var(--icon-color);
-  border-radius: 25px;
+.chat-container::-webkit-scrollbar-track {
+  background: transparent; /* Transparent scrollbar track */
 }
 
 /* Chat bubble styling */
