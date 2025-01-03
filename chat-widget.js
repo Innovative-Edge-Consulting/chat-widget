@@ -100,6 +100,7 @@ const initializeChatLogic = (apiKey, versionID) => {
       }
     });
 
+    // Auto-scroll to the latest message
     chatWindow.scrollTop = chatWindow.scrollHeight;
   };
 
@@ -124,7 +125,14 @@ const initializeChatLogic = (apiKey, versionID) => {
     chatBubble.appendChild(chatContent);
     chatWindow.appendChild(chatBubble);
 
-    chatWindow.scrollTop = chatWindow.scrollHeight;
+    // Auto-scroll only if user is not scrolling
+    if (
+      Math.abs(
+        chatWindow.scrollTop + chatWindow.clientHeight - chatWindow.scrollHeight
+      ) < 50
+    ) {
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
   };
 
   const createAssistantText = (text) => {
