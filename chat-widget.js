@@ -79,9 +79,10 @@ const initializeChatLogic = (apiKey, versionID) => {
 
     traces.forEach((trace) => {
       if (trace.type === "text") {
-        createBubble(trace.payload.message, "incoming");
+        createAssistantText(trace.payload.message);
       } else if (trace.type === "choice") {
         const buttonContainer = document.createElement("div");
+        buttonContainer.classList.add("choice-container");
 
         trace.payload.buttons.forEach((button) => {
           const buttonElement = document.createElement("button");
@@ -123,6 +124,18 @@ const initializeChatLogic = (apiKey, versionID) => {
     chatBubble.appendChild(chatContent);
     chatWindow.appendChild(chatBubble);
 
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  };
+
+  const createAssistantText = (text) => {
+    const chatWindow = document.getElementById("chat-window");
+    if (!chatWindow) return console.error("Chat window not found!");
+
+    const assistantText = document.createElement("p");
+    assistantText.classList.add("assistant-text");
+    assistantText.textContent = text;
+
+    chatWindow.appendChild(assistantText);
     chatWindow.scrollTop = chatWindow.scrollHeight;
   };
 
