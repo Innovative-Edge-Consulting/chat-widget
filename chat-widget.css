@@ -27,8 +27,8 @@ body {
 /* Chats container styling */
 .chat-container {
   overflow-y: auto;
-  max-height: calc(100vh - 80px); /* Adjust height to accommodate input field */
-  padding-bottom: 10px;
+  max-height: calc(100vh - 80px); /* Adjust height to leave space for the input field */
+  padding: 10px;
 }
 
 :where(.chat-container, textarea)::-webkit-scrollbar {
@@ -100,50 +100,6 @@ body {
   justify-content: center;
   background: var(--outgoing-chat-bg);
   border-top: 1px solid var(--incoming-chat-border);
-}
-
-.typing-container .typing-content {
-  display: flex;
-  width: 100%;
-  max-width: 100vw;
-  overflow-x: hidden;
-  align-items: flex-end;
-}
-
-.typing-container .typing-textarea {
-  flex: 1;
-  display: flex;
-  position: relative;
-  width: 100%;
-}
-
-.typing-textarea textarea {
-  flex: 1;
-  height: 55px;
-  border: none;
-  padding: 15px 20px;
-  background: var(--input-bg);
-  color: var(--text-color);
-  font-size: 1rem;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-.typing-textarea textarea::placeholder {
-  color: var(--placeholder-color);
-}
-
-.typing-textarea span#send-button {
-  flex-shrink: 0;
-  width: 55px;
-  height: 55px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--icon-hover-bg);
-  color: var(--text-color);
-  border-radius: 4px;
-  cursor: pointer;
 }
 
 /* Choice buttons */
