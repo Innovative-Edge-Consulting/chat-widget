@@ -149,7 +149,7 @@ const initializeChatLogic = (apiKey, versionID) => {
   const adjustScroll = () => {
     const chatWindow = document.getElementById("chat-window");
     if (chatWindow) {
-      chatWindow.scrollTop = chatWindow.scrollHeight; // Scroll to the bottom
+      chatWindow.scrollTop = chatWindow.scrollHeight;
     }
   };
 
