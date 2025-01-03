@@ -1,10 +1,96 @@
+/* General Reset */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+:root {
+  --text-color: #343541;
+  --icon-color: #FFFFFF;
+  --icon-hover-bg: #5b5e71;
+  --placeholder-color: #6c6c6c;
+  --outgoing-chat-bg: #FFFFFF;
+  --incoming-chat-bg: #F7F7F8;
+  --outgoing-chat-border: #D9D9D9;
+  --incoming-chat-border: #D9D9D3;
+  --input-bg: #EDEDED;
+  --scrollbar-color: transparent;
+  --button-bg: #007BFF;
+  --button-hover-bg: #0056b3;
+  --button-border-radius: 50%;
+}
+
+body {
+  background: var(--outgoing-chat-bg);
+}
+
+/* Chat Container */
+.chat-container {
+  overflow-y: auto;
+  max-height: 100vh;
+  padding-bottom: 150px;
+}
+
+.chat-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-container::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-color);
+  border-radius: 4px;
+}
+
+.chat-container::-webkit-scrollbar-track {
+  background: var(--scrollbar-color);
+}
+
+/* Chat Bubble */
+.chat {
+  padding: 10px;
+  display: flex;
+  margin-bottom: 10px;
+  color: var(--text-color);
+}
+
+.chat.outgoing {
+  justify-content: flex-end;
+}
+
+.chat.outgoing .chat-content {
+  background: var(--outgoing-chat-bg);
+  border: 1px solid var(--outgoing-chat-border);
+  border-radius: 15px;
+  padding: 10px 15px;
+  max-width: 50%;
+  word-wrap: break-word;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chat.incoming .chat-content {
+  background: var(--incoming-chat-bg);
+  border: 1px solid var(--incoming-chat-border);
+  border-radius: 15px;
+  padding: 10px 15px;
+  max-width: 50%;
+  word-wrap: break-word;
+}
+
+.chat-content {
+  display: flex;
+  align-items: flex-start;
+}
+
 /* Typing Area */
 .typing-container {
   position: fixed;
   bottom: 0;
   width: calc(100% - 20px); /* Subtract padding to avoid overflow */
-  max-width: 1200px; /* Limit width for desktops */
-  margin: 0 auto; /* Center on larger screens */
+  max-width: 1200px; /* Ensure it doesn't overflow */
+  margin: 0 auto;
   padding: 20px 10px;
   justify-content: center;
   background: var(--outgoing-chat-bg);
@@ -15,7 +101,6 @@
 .typing-content {
   display: flex;
   width: 100%;
-  max-width: 100%; /* Prevent overlap or scrollbars */
   align-items: flex-end;
 }
 
@@ -24,7 +109,6 @@
   display: flex;
   position: relative;
   width: 100%;
-  padding: 0; /* Reset padding for precision */
 }
 
 .typing-textarea textarea {
@@ -36,8 +120,8 @@
   color: var(--text-color);
   font-size: 1rem;
   border-radius: 4px;
-  box-sizing: border-box; /* Consistent dimensions */
-  margin-right: 10px; /* Add spacing between input and button */
+  box-sizing: border-box; /* Ensures consistent dimensions */
+  margin-right: 10px; /* Ensure proper spacing */
 }
 
 .typing-textarea textarea::placeholder {
@@ -61,4 +145,40 @@
 
 .typing-textarea #send-button:hover {
   background: var(--button-hover-bg);
+}
+
+/* Choice Buttons */
+.choice-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.choice-button {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 5px;
+  border: 1px solid var(--text-color);
+  border-radius: 4px;
+  background-color: var(--incoming-chat-bg);
+  color: var(--text-color);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.choice-button:hover {
+  background-color: var(--icon-hover-bg);
+  color: #fff;
+}
+
+/* Utility Classes */
+.hidden {
+  display: none;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
