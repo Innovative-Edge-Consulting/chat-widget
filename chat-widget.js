@@ -81,22 +81,7 @@ const initializeChatLogic = (apiKey, versionID) => {
       if (trace.type === "text") {
         createAssistantText(trace.payload.message);
       } else if (trace.type === "choice") {
-        const buttonContainer = document.createElement("div");
-        buttonContainer.classList.add("choice-container");
-
-        trace.payload.buttons.forEach((button) => {
-          const buttonElement = document.createElement("button");
-          buttonElement.classList.add("choice-button");
-          buttonElement.innerText = button.name;
-          buttonElement.onclick = () => {
-            createBubble(button.name, "outgoing");
-            interact(button.request);
-          };
-
-          buttonContainer.appendChild(buttonElement);
-        });
-
-        chatWindow.appendChild(buttonContainer);
+        createChoiceButtons(trace.payload.buttons);
       }
     });
 
