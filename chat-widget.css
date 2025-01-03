@@ -19,8 +19,8 @@
   --incoming-chat-border: #D9D9D3;
   --input-bg: #EDEDED;
   --scrollbar-color: transparent;
-  --button-bg: #1a1a1a; /* Darker black/blue background */
-  --button-hover-bg: #333333; /* Slightly lighter black/blue on hover */
+  --button-bg: #007BFF;
+  --button-hover-bg: #0056b3;
   --button-border-radius: 50%;
 }
 
@@ -89,6 +89,8 @@ body {
   position: fixed;
   bottom: 0;
   width: calc(100% - 20px); /* Subtract padding to avoid overflow */
+  max-width: 1200px; /* Ensure it doesn't overflow */
+  margin: 0 auto;
   padding: 20px 10px;
   justify-content: center;
   background: var(--outgoing-chat-bg);
@@ -99,7 +101,6 @@ body {
 .typing-content {
   display: flex;
   width: 100%;
-  max-width: 100%; /* Adjust to prevent overlap or scrollbars */
   align-items: flex-end;
 }
 
@@ -108,7 +109,6 @@ body {
   display: flex;
   position: relative;
   width: 100%;
-  gap: 10px; /* Added padding between textarea and button */
 }
 
 .typing-textarea textarea {
@@ -121,7 +121,7 @@ body {
   font-size: 1rem;
   border-radius: 4px;
   box-sizing: border-box; /* Ensures consistent dimensions */
-  max-width: calc(100% - 65px); /* Adjust for padding and button */
+  margin-right: 10px; /* Ensure proper spacing */
 }
 
 .typing-textarea textarea::placeholder {
@@ -139,21 +139,12 @@ body {
   color: var(--icon-color);
   border-radius: var(--button-border-radius);
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  transition: background-color 0.3s ease;
   border: none;
-  font-size: 1.2rem; /* Slightly larger for better visibility */
 }
 
 .typing-textarea #send-button:hover {
   background: var(--button-hover-bg);
-  transform: scale(1.1); /* Subtle enlargement on hover */
-}
-
-.typing-textarea #send-button::before {
-  content: '⤴'; /* Unicode arrow pointing up and right */
-  font-size: 1.5rem; /* Icon size */
-  font-weight: bold;
-  line-height: 1; /* Align icon vertically */
 }
 
 /* Choice Buttons */
@@ -181,7 +172,7 @@ body {
   color: #fff;
 }
 
-/* Utility Classes for Future Enhancements */
+/* Utility Classes */
 .hidden {
   display: none;
 }
