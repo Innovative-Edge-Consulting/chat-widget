@@ -22,27 +22,20 @@ const createChatWidget = (config) => {
   chatWindow.classList.add("chat-container");
   widget.appendChild(chatWindow);
 
-  const typingContainer = document.createElement("div");
-  typingContainer.classList.add("typing-container");
-  widget.appendChild(typingContainer);
-
-  const typingContent = document.createElement("div");
-  typingContent.classList.add("typing-content");
-  typingContainer.appendChild(typingContent);
-
-  const typingTextarea = document.createElement("div");
-  typingTextarea.classList.add("typing-textarea");
-  typingContent.appendChild(typingTextarea);
+  const inputContainer = document.createElement("div");
+  inputContainer.id = "input-container";
+  inputContainer.classList.add("input-container");
+  widget.appendChild(inputContainer);
 
   const userInput = document.createElement("textarea");
   userInput.id = "user-input";
   userInput.placeholder = "Type your message...";
-  typingTextarea.appendChild(userInput);
+  inputContainer.appendChild(userInput);
 
   const sendButton = document.createElement("span");
   sendButton.id = "send-button";
   sendButton.innerHTML = "send";
-  typingTextarea.appendChild(sendButton);
+  inputContainer.appendChild(sendButton);
 
   initializeChatLogic(apiKey, versionID);
 };
@@ -121,30 +114,6 @@ const initializeChatLogic = (apiKey, versionID) => {
     assistantText.textContent = text;
 
     chatWindow.appendChild(assistantText);
-    chatWindow.scrollTop = chatWindow.scrollHeight;
-  };
-
-  const createChoiceButtons = (buttons) => {
-    const chatWindow = document.getElementById("chat-window");
-    if (!chatWindow) return console.error("Chat window not found!");
-
-    const buttonContainer = document.createElement("div");
-    buttonContainer.classList.add("choice-container");
-
-    buttons.forEach((button) => {
-      const buttonElement = document.createElement("button");
-      buttonElement.classList.add("choice-button");
-      buttonElement.innerText = button.name;
-      buttonElement.onclick = () => {
-        createBubble(button.name, "outgoing");
-        interact(button.request);
-      };
-
-      buttonContainer.appendChild(buttonElement);
-    });
-
-    chatWindow.appendChild(buttonContainer);
-
     chatWindow.scrollTop = chatWindow.scrollHeight;
   };
 
