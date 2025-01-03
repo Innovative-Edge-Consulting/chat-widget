@@ -124,6 +124,30 @@ const initializeChatLogic = (apiKey, versionID) => {
     chatWindow.scrollTop = chatWindow.scrollHeight;
   };
 
+  const createChoiceButtons = (buttons) => {
+    const chatWindow = document.getElementById("chat-window");
+    if (!chatWindow) return console.error("Chat window not found!");
+
+    const buttonContainer = document.createElement("div");
+    buttonContainer.classList.add("choice-container");
+
+    buttons.forEach((button) => {
+      const buttonElement = document.createElement("button");
+      buttonElement.classList.add("choice-button");
+      buttonElement.innerText = button.name;
+      buttonElement.onclick = () => {
+        createBubble(button.name, "outgoing");
+        interact(button.request);
+      };
+
+      buttonContainer.appendChild(buttonElement);
+    });
+
+    chatWindow.appendChild(buttonContainer);
+
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  };
+
   const handleTextInput = async () => {
     const userInputElem = document.getElementById("user-input");
     const userInput = userInputElem.value.trim();
