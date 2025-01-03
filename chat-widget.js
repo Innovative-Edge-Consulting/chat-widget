@@ -100,7 +100,7 @@ const initializeChatLogic = (apiKey, versionID) => {
       }
     });
 
-    chatWindow.scrollTop = chatWindow.scrollHeight;
+    adjustScroll(chatWindow);
   };
 
   const createBubble = (text, type) => {
@@ -124,13 +124,7 @@ const initializeChatLogic = (apiKey, versionID) => {
     chatBubble.appendChild(chatContent);
     chatWindow.appendChild(chatBubble);
 
-    if (
-      Math.abs(
-        chatWindow.scrollTop + chatWindow.clientHeight - chatWindow.scrollHeight
-      ) < 50
-    ) {
-      chatWindow.scrollTop = chatWindow.scrollHeight;
-    }
+    adjustScroll(chatWindow);
   };
 
   const createAssistantText = (text) => {
@@ -142,7 +136,18 @@ const initializeChatLogic = (apiKey, versionID) => {
     assistantText.textContent = text;
 
     chatWindow.appendChild(assistantText);
-    chatWindow.scrollTop = chatWindow.scrollHeight;
+
+    adjustScroll(chatWindow);
+  };
+
+  const adjustScroll = (chatWindow) => {
+    if (
+      Math.abs(
+        chatWindow.scrollTop + chatWindow.clientHeight - chatWindow.scrollHeight
+      ) < 50
+    ) {
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
   };
 
   const handleTextInput = async () => {
