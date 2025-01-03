@@ -31,9 +31,9 @@ body {
 
 /* Chats container styling */
 .chat-container {
-  flex: 1;
-  overflow: visible; /* Remove the internal scroll */
-  padding-bottom: 10px; /* Prevent overlap with input */
+  flex: 1; /* Allow chat to grow and fill available space */
+  overflow: visible; /* Remove internal scrolling */
+  padding: 10px; /* Add padding for aesthetics */
 }
 
 /* Chat bubble styling */
@@ -84,7 +84,7 @@ body {
 /* Typing container */
 .typing-container {
   position: sticky;
-  bottom: 0;
+  bottom: 0; /* Stick to the bottom of the viewport */
   width: 100%;
   display: flex;
   padding: 20px 10px;
