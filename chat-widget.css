@@ -10,7 +10,7 @@
 
 :root {
   --text-color: #343541;
-  --icon-color: #ACACBE;
+  --icon-color: #FFFFFF;
   --icon-hover-bg: #5b5e71;
   --placeholder-color: #6c6c6c;
   --outgoing-chat-bg: #FFFFFF;
@@ -19,6 +19,9 @@
   --incoming-chat-border: #D9D9D3;
   --input-bg: #EDEDED;
   --scrollbar-color: transparent;
+  --button-bg: #007BFF;
+  --button-hover-bg: #0056b3;
+  --button-border-radius: 50%;
 }
 
 body {
@@ -86,8 +89,8 @@ body {
   position: fixed;
   bottom: 0;
   width: calc(100% - 20px); /* Subtract padding to avoid overflow */
-  max-width: 1200px; /* Limit width for desktops */
-  margin: 0 auto; /* Center on larger screens */
+  max-width: 1200px; /* Ensure it doesn't overflow */
+  margin: 0 auto;
   padding: 20px 10px;
   justify-content: center;
   background: var(--outgoing-chat-bg);
@@ -98,7 +101,6 @@ body {
 .typing-content {
   display: flex;
   width: 100%;
-  max-width: 100%; /* Adjust to prevent overlap or scrollbars */
   align-items: flex-end;
 }
 
@@ -119,7 +121,7 @@ body {
   font-size: 1rem;
   border-radius: 4px;
   box-sizing: border-box; /* Ensures consistent dimensions */
-  max-width: calc(100% - 55px); /* Ensure space for send button */
+  margin-right: 10px; /* Ensure proper spacing */
 }
 
 .typing-textarea textarea::placeholder {
@@ -133,10 +135,16 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--icon-hover-bg);
-  color: var(--text-color);
-  border-radius: 4px;
+  background: var(--button-bg);
+  color: var(--icon-color);
+  border-radius: var(--button-border-radius);
   cursor: pointer;
+  transition: background-color 0.3s ease;
+  border: none;
+}
+
+.typing-textarea #send-button:hover {
+  background: var(--button-hover-bg);
 }
 
 /* Choice Buttons */
@@ -164,7 +172,7 @@ body {
   color: #fff;
 }
 
-/* Utility Classes for Future Enhancements */
+/* Utility Classes */
 .hidden {
   display: none;
 }
