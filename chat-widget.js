@@ -56,7 +56,10 @@ class ChatWidget {
 
     this.sendButton = document.createElement("span");
     this.sendButton.id = "send-button";
-    this.sendButton.innerHTML = "send";
+
+    // Replace innerHTML with Font Awesome arrow icon
+    this.sendButton.innerHTML = '<i class="fa-solid fa-arrow-up"></i>';
+
     typingTextarea.appendChild(this.sendButton);
   }
 
