@@ -1,17 +1,3 @@
-// Adjust chat container height dynamically
-const adjustChatHeight = () => {
-  const chatContainer = document.getElementById("chat-window");
-  const typingContainer = document.querySelector(".typing-container");
-
-  if (chatContainer && typingContainer) {
-    const viewportHeight = window.innerHeight;
-    const inputHeight = typingContainer.offsetHeight;
-
-    // Set the chat container height dynamically
-    chatContainer.style.height = `${viewportHeight - inputHeight}px`;
-  }
-};
-
 // Chat Widget Initialization
 const createChatWidget = (config) => {
   const { apiKey, versionID, containerID } = config;
@@ -59,12 +45,6 @@ const createChatWidget = (config) => {
   typingTextarea.appendChild(sendButton);
 
   initializeChatLogic(apiKey, versionID);
-
-  // Initial adjustment
-  adjustChatHeight();
-
-  // Adjust height on window resize
-  window.addEventListener("resize", adjustChatHeight);
 };
 
 // Chat Logic Initialization
@@ -94,15 +74,33 @@ const initializeChatLogic = (apiKey, versionID) => {
   };
 
   const handleTraces = (traces) => {
+    const chatWindow = document.getElementById("chat-window");
+    if (!chatWindow) return console.error("Chat window not found!");
+
     traces.forEach((trace) => {
       if (trace.type === "text") {
         createAssistantText(trace.payload.message);
       } else if (trace.type === "choice") {
-        createChoiceButtons(trace.payload.buttons);
+        const buttonContainer = document.createElement("div");
+        buttonContainer.classList.add("choice-container");
+
+        trace.payload.buttons.forEach((button) => {
+          const buttonElement = document.createElement("button");
+          buttonElement.classList.add("choice-button");
+          buttonElement.innerText = button.name;
+          buttonElement.onclick = () => {
+            createBubble(button.name, "outgoing");
+            interact(button.request);
+          };
+
+          buttonContainer.appendChild(buttonElement);
+        });
+
+        chatWindow.appendChild(buttonContainer);
       }
     });
 
-    adjustScroll();
+    chatWindow.scrollTop = chatWindow.scrollHeight;
   };
 
   const createBubble = (text, type) => {
@@ -126,7 +124,7 @@ const initializeChatLogic = (apiKey, versionID) => {
     chatBubble.appendChild(chatContent);
     chatWindow.appendChild(chatBubble);
 
-    adjustScroll();
+    chatWindow.scrollTop = chatWindow.scrollHeight;
   };
 
   const createAssistantText = (text) => {
@@ -138,39 +136,7 @@ const initializeChatLogic = (apiKey, versionID) => {
     assistantText.textContent = text;
 
     chatWindow.appendChild(assistantText);
-
-    adjustScroll();
-  };
-
-  const createChoiceButtons = (buttons) => {
-    const chatWindow = document.getElementById("chat-window");
-    if (!chatWindow) return console.error("Chat window not found!");
-
-    const buttonContainer = document.createElement("div");
-    buttonContainer.classList.add("choice-container");
-
-    buttons.forEach((button) => {
-      const buttonElement = document.createElement("button");
-      buttonElement.classList.add("choice-button");
-      buttonElement.innerText = button.name;
-      buttonElement.onclick = () => {
-        createBubble(button.name, "outgoing");
-        interact(button.request);
-      };
-
-      buttonContainer.appendChild(buttonElement);
-    });
-
-    chatWindow.appendChild(buttonContainer);
-
-    adjustScroll();
-  };
-
-  const adjustScroll = () => {
-    const chatWindow = document.getElementById("chat-window");
-    if (chatWindow) {
-      chatWindow.scrollTop = chatWindow.scrollHeight;
-    }
+    chatWindow.scrollTop = chatWindow.scrollHeight;
   };
 
   const handleTextInput = async () => {
