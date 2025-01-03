@@ -76,6 +76,7 @@ class ChatWidget {
 
   async interact(request) {
     try {
+      console.log("Sending request:", request); // Debug log
       const response = await fetch(
         `https://general-runtime.voiceflow.com/state/user/${this.userId}/interact`,
         {
@@ -90,6 +91,7 @@ class ChatWidget {
       );
 
       const traces = await response.json();
+      console.log("Received traces:", traces); // Debug log
       this.handleTraces(traces);
     } catch (error) {
       console.error("Error interacting with Voiceflow:", error);
