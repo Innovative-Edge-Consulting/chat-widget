@@ -74,33 +74,15 @@ const initializeChatLogic = (apiKey, versionID) => {
   };
 
   const handleTraces = (traces) => {
-    const chatWindow = document.getElementById("chat-window");
-    if (!chatWindow) return console.error("Chat window not found!");
-
     traces.forEach((trace) => {
       if (trace.type === "text") {
         createAssistantText(trace.payload.message);
       } else if (trace.type === "choice") {
-        const buttonContainer = document.createElement("div");
-        buttonContainer.classList.add("choice-container");
-
-        trace.payload.buttons.forEach((button) => {
-          const buttonElement = document.createElement("button");
-          buttonElement.classList.add("choice-button");
-          buttonElement.innerText = button.name;
-          buttonElement.onclick = () => {
-            createBubble(button.name, "outgoing");
-            interact(button.request);
-          };
-
-          buttonContainer.appendChild(buttonElement);
-        });
-
-        chatWindow.appendChild(buttonContainer);
+        createChoiceButtons(trace.payload.buttons);
       }
     });
 
-    adjustScroll(chatWindow);
+    adjustScroll();
   };
 
   const createBubble = (text, type) => {
@@ -124,7 +106,7 @@ const initializeChatLogic = (apiKey, versionID) => {
     chatBubble.appendChild(chatContent);
     chatWindow.appendChild(chatBubble);
 
-    adjustScroll(chatWindow);
+    adjustScroll();
   };
 
   const createAssistantText = (text) => {
@@ -137,17 +119,35 @@ const initializeChatLogic = (apiKey, versionID) => {
 
     chatWindow.appendChild(assistantText);
 
-    adjustScroll(chatWindow);
+    adjustScroll();
   };
 
-  const adjustScroll = (chatWindow) => {
-    if (
-      Math.abs(
-        chatWindow.scrollTop + chatWindow.clientHeight - chatWindow.scrollHeight
-      ) < 50
-    ) {
-      chatWindow.scrollTop = chatWindow.scrollHeight;
-    }
+  const createChoiceButtons = (buttons) => {
+    const chatWindow = document.getElementById("chat-window");
+    if (!chatWindow) return console.error("Chat window not found!");
+
+    const buttonContainer = document.createElement("div");
+    buttonContainer.classList.add("choice-container");
+
+    buttons.forEach((button) => {
+      const buttonElement = document.createElement("button");
+      buttonElement.classList.add("choice-button");
+      buttonElement.innerText = button.name;
+      buttonElement.onclick = () => {
+        createBubble(button.name, "outgoing");
+        interact(button.request);
+      };
+
+      buttonContainer.appendChild(buttonElement);
+    });
+
+    chatWindow.appendChild(buttonContainer);
+
+    adjustScroll();
+  };
+
+  const adjustScroll = () => {
+    window.scrollTo(0, document.body.scrollHeight);
   };
 
   const handleTextInput = async () => {
