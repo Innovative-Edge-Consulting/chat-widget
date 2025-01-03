@@ -27,18 +27,18 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow: hidden; /* Prevent body-level scrolling */
+  overflow: hidden; /* Prevent body scrolling */
 }
 
 /* Chat container */
 .chat-container {
-  flex: 1; /* Fill remaining space above the input field */
-  overflow-y: auto; /* Enable vertical scrolling */
+  flex: 1; /* Occupies available space above the input field */
+  overflow-y: auto; /* Vertical scrolling for chat messages */
   padding: 10px;
 }
 
 .chat-container::-webkit-scrollbar {
-  width: 8px;
+  width: 8px; /* Width of scrollbar */
 }
 
 .chat-container::-webkit-scrollbar-thumb {
@@ -86,8 +86,8 @@ body {
   align-items: flex-start;
 }
 
-/* Input field container (fully independent) */
-.input-container {
+/* Input field container */
+.typing-container {
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -99,8 +99,14 @@ body {
   justify-content: space-between;
 }
 
-.input-container textarea {
-  flex: 1; /* Fill the space for input */
+.typing-container .typing-textarea {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.typing-container textarea {
+  flex: 1; /* Expands input field */
   height: 50px;
   border: none;
   padding: 10px 15px;
@@ -110,14 +116,13 @@ body {
   border-radius: 5px;
   box-sizing: border-box;
   resize: none;
-  overflow: hidden;
 }
 
-.input-container textarea::placeholder {
+.typing-container textarea::placeholder {
   color: var(--placeholder-color);
 }
 
-.input-container #send-button {
+.typing-container #send-button {
   flex-shrink: 0;
   width: 55px;
   height: 50px;
@@ -129,4 +134,29 @@ body {
   justify-content: center;
   border-radius: 5px;
   cursor: pointer;
+}
+
+/* Choice buttons */
+.choice-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.choice-button {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 5px;
+  border: 1px solid var(--text-color);
+  border-radius: 4px;
+  background-color: var(--incoming-chat-bg);
+  color: var(--text-color);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.choice-button:hover {
+  background-color: var(--icon-hover-bg);
+  color: #fff;
 }
