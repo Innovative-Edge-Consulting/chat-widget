@@ -83,7 +83,7 @@ class ChatWidget {
           method: "POST",
           headers: {
             Authorization: this.apiKey,
-            "versionID": "production",
+            "versionID": this.versionID,
             "accept": "application/json",
             "content-type": "application/json",
           },
@@ -91,15 +91,19 @@ class ChatWidget {
         }
       );
 
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.status} ${response.statusText}`);
+      }
+
       const traces = await response.json();
       console.log("Received traces:", traces); // Debug log
-      if (traces && traces.length) {
+      if (traces && traces.length > 0) {
         this.handleTraces(traces);
       } else {
-        console.warn("No traces received. Check Voiceflow configuration.");
+        console.warn("No traces received. Check if Voiceflow has a launch response configured.");
       }
     } catch (error) {
-      console.error("Error interacting with Voiceflow:", error);
+      console.error("Error during interaction:", error);
     }
   }
 
@@ -171,9 +175,14 @@ class ChatWidget {
 (function () {
   const config = {
     apiKey: "YOUR_API_KEY_HERE", // Replace with your Voiceflow API Key
-    versionID: "YOUR_VOICE_FLOW_VERSION_ID_HERE", // Replace with your Voiceflow Version ID
+    versionID: "YOUR_VERSION_ID_HERE", // Replace with your Voiceflow Version ID
     containerID: "chat-container", // ID of the container for embedding the widget
   };
 
-  new ChatWidget(config);
+  const chatWidget = new ChatWidget(config);
+
+  // Test initial interaction
+  chatWidget.interact({ type: "launch" }).catch((error) => {
+    console.error("Initialization failed:", error);
+  });
 })();
