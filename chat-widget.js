@@ -1,61 +1,88 @@
 // Chat Widget Initialization
-const createChatWidget = (config) => {
-  const { apiKey, versionID, containerID } = config;
+class ChatWidget {
+  constructor(config) {
+    const { apiKey, versionID, containerID } = config;
 
-  if (!apiKey || !versionID) {
-    console.error("Missing API Key or Version ID. Please provide both.");
-    return;
+    if (!apiKey || !versionID) {
+      console.error("Missing API Key or Version ID. Please provide both.");
+      return;
+    }
+
+    const container = document.getElementById(containerID);
+    if (!container) {
+      console.error(`Container with ID "${containerID}" not found!`);
+      return;
+    }
+
+    this.apiKey = apiKey;
+    this.versionID = versionID;
+    this.userId = `user_${Math.random().toString(36).substr(2, 9)}`;
+
+    this.initializeUI(container);
+    this.attachEventHandlers();
+    this.interact({ type: "launch" });
   }
 
-  const container = document.getElementById(containerID);
-  if (!container) {
-    console.error(`Container with ID "${containerID}" not found!`);
-    return;
+  initializeUI(container) {
+    this.widget = document.createElement("div");
+    this.widget.id = "chat-widget";
+    container.appendChild(this.widget);
+
+    this.chatWindow = document.createElement("div");
+    this.chatWindow.id = "chat-window";
+    this.chatWindow.classList.add("chat-container");
+    this.widget.appendChild(this.chatWindow);
+
+    this.createTypingArea();
   }
 
-  const widget = document.createElement("div");
-  widget.id = "chat-widget";
-  container.appendChild(widget);
+  createTypingArea() {
+    const typingContainer = document.createElement("div");
+    typingContainer.classList.add("typing-container");
+    this.widget.appendChild(typingContainer);
 
-  const chatWindow = document.createElement("div");
-  chatWindow.id = "chat-window";
-  chatWindow.classList.add("chat-container");
-  widget.appendChild(chatWindow);
+    const typingContent = document.createElement("div");
+    typingContent.classList.add("typing-content");
+    typingContainer.appendChild(typingContent);
 
-  const inputContainer = document.createElement("div");
-  inputContainer.classList.add("typing-container");
-  widget.appendChild(inputContainer);
+    const typingTextarea = document.createElement("div");
+    typingTextarea.classList.add("typing-textarea");
+    typingContent.appendChild(typingTextarea);
 
-  const typingTextarea = document.createElement("div");
-  typingTextarea.classList.add("typing-textarea");
-  inputContainer.appendChild(typingTextarea);
+    this.userInput = document.createElement("textarea");
+    this.userInput.id = "user-input";
+    this.userInput.placeholder = "Type your message...";
+    typingTextarea.appendChild(this.userInput);
 
-  const userInput = document.createElement("textarea");
-  userInput.id = "user-input";
-  userInput.placeholder = "Type your message...";
-  typingTextarea.appendChild(userInput);
+    this.sendButton = document.createElement("span");
+    this.sendButton.id = "send-button";
+    this.sendButton.innerHTML = "send";
+    typingTextarea.appendChild(this.sendButton);
+  }
 
-  const sendButton = document.createElement("span");
-  sendButton.id = "send-button";
-  sendButton.innerHTML = "send";
-  typingTextarea.appendChild(sendButton);
+  attachEventHandlers() {
+    this.sendButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      this.handleTextInput();
+    });
 
-  initializeChatLogic(apiKey, versionID);
-};
+    this.userInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        this.handleTextInput();
+      }
+    });
+  }
 
-// Chat Logic Initialization
-const initializeChatLogic = (apiKey, versionID) => {
-  const userId = `user_${Math.random().toString(36).substr(2, 9)}`;
-
-  const interact = async (request) => {
+  async interact(request) {
     try {
       const response = await fetch(
-        `https://general-runtime.voiceflow.com/state/user/${userId}/interact`,
+        `https://general-runtime.voiceflow.com/state/user/${this.userId}/interact`,
         {
           method: "POST",
           headers: {
-            Authorization: apiKey,
-            versionID,
+            Authorization: this.apiKey,
+            versionID: this.versionID,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ request }),
@@ -63,31 +90,24 @@ const initializeChatLogic = (apiKey, versionID) => {
       );
 
       const traces = await response.json();
-      handleTraces(traces);
+      this.handleTraces(traces);
     } catch (error) {
       console.error("Error interacting with Voiceflow:", error);
     }
-  };
+  }
 
-  const handleTraces = (traces) => {
-    const chatWindow = document.getElementById("chat-window");
-    if (!chatWindow) return console.error("Chat window not found!");
-
+  handleTraces(traces) {
     traces.forEach((trace) => {
       if (trace.type === "text") {
-        createAssistantText(trace.payload.message);
+        this.createBubble(trace.payload.message, "incoming");
       } else if (trace.type === "choice") {
-        createChoiceButtons(trace.payload.buttons);
+        this.createChoiceButtons(trace.payload.buttons);
       }
     });
+    this.chatWindow.scrollTop = this.chatWindow.scrollHeight;
+  }
 
-    chatWindow.scrollTop = chatWindow.scrollHeight;
-  };
-
-  const createBubble = (text, type) => {
-    const chatWindow = document.getElementById("chat-window");
-    if (!chatWindow) return console.error("Chat window not found!");
-
+  createBubble(text, type) {
     const chatBubble = document.createElement("div");
     chatBubble.classList.add("chat", type);
 
@@ -103,27 +123,12 @@ const initializeChatLogic = (apiKey, versionID) => {
     chatDetails.appendChild(message);
     chatContent.appendChild(chatDetails);
     chatBubble.appendChild(chatContent);
-    chatWindow.appendChild(chatBubble);
+    this.chatWindow.appendChild(chatBubble);
 
-    chatWindow.scrollTop = chatWindow.scrollHeight;
-  };
+    this.chatWindow.scrollTop = this.chatWindow.scrollHeight;
+  }
 
-  const createAssistantText = (text) => {
-    const chatWindow = document.getElementById("chat-window");
-    if (!chatWindow) return console.error("Chat window not found!");
-
-    const assistantText = document.createElement("p");
-    assistantText.classList.add("assistant-text");
-    assistantText.textContent = text;
-
-    chatWindow.appendChild(assistantText);
-    chatWindow.scrollTop = chatWindow.scrollHeight;
-  };
-
-  const createChoiceButtons = (buttons) => {
-    const chatWindow = document.getElementById("chat-window");
-    if (!chatWindow) return console.error("Chat window not found!");
-
+  createChoiceButtons(buttons) {
     const buttonContainer = document.createElement("div");
     buttonContainer.classList.add("choice-container");
 
@@ -132,39 +137,34 @@ const initializeChatLogic = (apiKey, versionID) => {
       buttonElement.classList.add("choice-button");
       buttonElement.innerText = button.name;
       buttonElement.onclick = () => {
-        createBubble(button.name, "outgoing");
-        interact(button.request);
+        this.createBubble(button.name, "outgoing");
+        this.interact(button.request);
       };
 
       buttonContainer.appendChild(buttonElement);
     });
 
-    chatWindow.appendChild(buttonContainer);
+    this.chatWindow.appendChild(buttonContainer);
+    this.chatWindow.scrollTop = this.chatWindow.scrollHeight;
+  }
 
-    chatWindow.scrollTop = chatWindow.scrollHeight;
-  };
-
-  const handleTextInput = async () => {
-    const userInputElem = document.getElementById("user-input");
-    const userInput = userInputElem.value.trim();
+  async handleTextInput() {
+    const userInput = this.userInput.value.trim();
     if (!userInput) return;
 
-    userInputElem.value = "";
-    createBubble(userInput, "outgoing");
-    await interact({ type: "text", payload: userInput });
+    this.userInput.value = "";
+    this.createBubble(userInput, "outgoing");
+    await this.interact({ type: "text", payload: userInput });
+  }
+}
+
+// Initialization
+(function () {
+  const config = {
+    apiKey: "YOUR_API_KEY_HERE", // Replace with your Voiceflow API Key
+    versionID: "YOUR_VOICE_FLOW_VERSION_ID_HERE", // Replace with your Voiceflow Version ID
+    containerID: "chat-container", // ID of the container for embedding the widget
   };
 
-  document.getElementById("send-button").onclick = (event) => {
-    event.preventDefault();
-    handleTextInput();
-  };
-
-  document.getElementById("user-input").onkeydown = (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      handleTextInput();
-    }
-  };
-
-  interact({ type: "launch" });
-};
+  new ChatWidget(config);
+})();
