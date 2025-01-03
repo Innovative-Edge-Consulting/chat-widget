@@ -32,10 +32,10 @@ body {
 
 /* Chats container styling */
 .chat-container {
-  flex: 1; /* Occupy all available space above the input field */
-  overflow-y: auto; /* Re-enable vertical scrolling */
+  flex: 1; /* Take up all available space above the input field */
+  overflow-y: auto; /* Enable vertical scrolling for overflow content */
   padding: 10px;
-  scrollbar-width: thin; /* Modern scrollbars */
+  scrollbar-width: thin; /* Thin modern scrollbars */
 }
 
 .chat-container::-webkit-scrollbar {
