@@ -32,15 +32,9 @@ body {
 
 /* Chats container styling */
 .chat-container {
-  flex: 1;
-  overflow-y: auto; /* Allow scrolling only if content exceeds */
+  flex: 1; /* Fill all available space above the input field */
+  overflow-y: auto; /* Enable vertical scrolling when messages exceed the viewport height */
   padding: 10px;
-  margin-bottom: 70px; /* Ensure space for the input field */
-  scrollbar-width: none; /* Hide scrollbar in Firefox */
-}
-
-.chat-container::-webkit-scrollbar {
-  display: none; /* Hide scrollbar in Chrome, Safari, and Edge */
 }
 
 /* Chat bubble styling */
@@ -86,7 +80,6 @@ body {
   color: var(--text-color);
   padding: 5px 0;
   word-wrap: break-word;
-  overflow: visible; /* Ensure no extra scrollbars appear */
 }
 
 /* Typing container */
@@ -98,7 +91,7 @@ body {
   padding: 15px 10px;
   background: var(--outgoing-chat-bg);
   border-top: 1px solid var(--incoming-chat-border);
-  z-index: 1000; /* Keep it above all other elements */
+  z-index: 1000; /* Ensure input stays above all elements */
 }
 
 .typing-container .typing-content {
