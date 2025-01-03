@@ -27,14 +27,28 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow: hidden; /* Prevent extra scrolling on the body */
+  overflow: hidden; /* Prevent body-level scrolling */
 }
 
 /* Chats container styling */
 .chat-container {
-  flex: 1; /* Fill all available space above the input field */
-  overflow-y: auto; /* Enable vertical scrolling when messages exceed the viewport height */
+  flex: 1; /* Occupy remaining space above the input field */
+  overflow-y: auto; /* Allow vertical scrolling when content exceeds */
   padding: 10px;
+  scrollbar-width: thin; /* Modern scrollbars */
+}
+
+.chat-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-container::-webkit-scrollbar-thumb {
+  background: var(--icon-color);
+  border-radius: 4px;
+}
+
+.chat-container::-webkit-scrollbar-track {
+  background: var(--incoming-chat-bg);
 }
 
 /* Chat bubble styling */
@@ -84,7 +98,7 @@ body {
 
 /* Typing container */
 .typing-container {
-  position: fixed; /* Fixed at the bottom */
+  position: fixed;
   bottom: 0;
   width: 100%;
   display: flex;
