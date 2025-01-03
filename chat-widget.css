@@ -22,27 +22,18 @@
 
 body {
   background: var(--outgoing-chat-bg);
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Chats container styling */
 .chat-container {
-  overflow-y: auto;
-  max-height: calc(100vh - 90px); /* Adjust height to prevent overlap */
-  padding-bottom: 10px; /* Space for content clarity */
-}
-
-:where(.chat-container, textarea)::-webkit-scrollbar {
-  width: 6px;
-}
-
-:where(.chat-container, textarea)::-webkit-scrollbar-track {
-  background: var(--incoming-chat-bg);
-  border-radius: 25px;
-}
-
-:where(.chat-container, textarea)::-webkit-scrollbar-thumb {
-  background: var(--icon-color);
-  border-radius: 25px;
+  flex: 1;
+  overflow: visible; /* Remove the internal scroll */
+  padding-bottom: 10px; /* Prevent overlap with input */
 }
 
 /* Chat bubble styling */
@@ -92,7 +83,7 @@ body {
 
 /* Typing container */
 .typing-container {
-  position: fixed;
+  position: sticky;
   bottom: 0;
   width: 100%;
   display: flex;
