@@ -56,10 +56,7 @@ class ChatWidget {
 
     this.sendButton = document.createElement("span");
     this.sendButton.id = "send-button";
-
-    // Replace innerHTML with Font Awesome arrow icon
-    this.sendButton.innerHTML = '<i class="fa-solid fa-arrow-up"></i>';
-
+    this.sendButton.innerHTML = "send";
     typingTextarea.appendChild(this.sendButton);
   }
 
@@ -120,14 +117,7 @@ class ChatWidget {
         console.log("Unhandled trace type:", trace);
       }
     });
-
-    // Ensure the chat window scrolls to the bottom
-    setTimeout(() => {
-      this.chatWindow.scroll({
-        top: this.chatWindow.scrollHeight,
-        behavior: "smooth", // Smooth scrolling for better UX
-      });
-    }, 100); // Delay to account for DOM updates
+    this.chatWindow.scrollTop = this.chatWindow.scrollHeight;
   }
 
   createBubble(text, type) {
@@ -181,25 +171,13 @@ class ChatWidget {
   }
 }
 
-// Updated Initialization without inline config
+// Initialization
 (function () {
-  const container = document.getElementById("chat-container");
-
-  if (!container) {
-    console.error("Chat container not found!");
-    return;
-  }
-
   const config = {
-    apiKey: container.getAttribute("data-api-key"),
-    versionID: container.getAttribute("data-version-id"),
-    containerID: container.id,
+    apiKey: "YOUR_API_KEY_HERE", // Replace with your Voiceflow API Key
+    versionID: "YOUR_VERSION_ID_HERE", // Replace with your Voiceflow Version ID
+    containerID: "chat-container", // ID of the container for embedding the widget
   };
-
-  if (!config.apiKey || !config.versionID) {
-    console.error("Missing API Key or Version ID. Ensure they are provided in the HTML.");
-    return;
-  }
 
   const chatWidget = new ChatWidget(config);
 
