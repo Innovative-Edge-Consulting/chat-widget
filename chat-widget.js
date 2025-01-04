@@ -56,7 +56,10 @@ class ChatWidget {
 
     this.sendButton = document.createElement("span");
     this.sendButton.id = "send-button";
-    this.sendButton.innerHTML = "send";
+
+    // Replace innerHTML with Font Awesome arrow icon
+    this.sendButton.innerHTML = '<i class="fa-solid fa-arrow-up"></i>';
+
     typingTextarea.appendChild(this.sendButton);
   }
 
@@ -117,7 +120,12 @@ class ChatWidget {
         console.log("Unhandled trace type:", trace);
       }
     });
-    this.chatWindow.scrollTop = this.chatWindow.scrollHeight;
+
+    // Ensure the chat window scrolls to the bottom
+    const chatWindow = this.chatWindow;
+    setTimeout(() => {
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }, 100); // Delay to account for DOM updates
   }
 
   createBubble(text, type) {
