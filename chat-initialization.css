@@ -1,64 +1,72 @@
-/* styles.css */
+/* Reset styles */
 body {
+  margin: 0;
   font-family: "Poppins", sans-serif;
+  background-color: #f7f7f8;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  margin: 0;
-  background-color: #f7f7f8;
+  height: 100vh;
 }
 
+/* Main container */
 .ui-container {
-  width: 100%;
-  max-width: 1200px; /* Ensure the container is wide enough */
+  text-align: center;
+  background: #ffffff;
   padding: 20px;
-  margin: 0 auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
 }
 
+/* Title styling */
 .ui-title {
   color: #343541;
   margin-bottom: 20px;
+  font-size: 24px;
 }
 
-.input-container {
+/* Search bar container */
+.search-container {
   display: flex;
-  justify-content: center;
   align-items: center;
   width: 100%;
-  gap: 15px; /* Adds padding between input field and button */
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 10px;
+  border: 1px solid #d9d9d9;
+  border-radius: 24px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-#user-input {
-  flex: 1;
-  width: 80%; /* Set to 80% of the container width for a significantly longer input */
-  padding: 15px 20px; /* Comfortable padding */
-  font-size: 1rem;
-  border: none; /* Removes border */
-  border-radius: 5px; /* Rounded corners */
-  outline: none; /* Removes default focus outline */
-  background-color: #f7f7f8; /* Subtle background color */
-  color: #343541; /* Text color */
-  box-shadow: none; /* Removes shadow */
-  transition: box-shadow 0.3s ease; /* Smooth focus effect */
-}
-
-#user-input:focus {
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Optional glow effect on focus */
-}
-
-#execute-button {
-  flex-shrink: 0;
-  padding: 15px 25px; /* Larger padding for a better button size */
-  font-size: 1rem;
-  color: #ffffff;
-  background: #007bff;
+/* Input field styling */
+.search-input {
+  flex-grow: 1;
+  padding: 10px 15px;
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background 0.3s;
+  border-radius: 24px 0 0 24px;
+  outline: none;
+  font-size: 16px;
+  color: #343541;
+  background-color: #f7f7f8;
 }
 
-#execute-button:hover {
-  background: #0056b3;
+/* Button styling */
+.search-button {
+  background: none;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 0 24px 24px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Icon styling */
+.search-button img {
+  width: 20px;
+  height: 20px;
 }
