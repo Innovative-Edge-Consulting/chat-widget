@@ -65,7 +65,7 @@ body {
   border: 1px solid var(--outgoing-chat-border);
   border-radius: 15px;
   padding: 10px 15px;
-  max-width: 75%;
+  max-width: 50%;
   word-wrap: break-word;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -75,7 +75,7 @@ body {
   border: 1px solid var(--incoming-chat-border);
   border-radius: 15px;
   padding: 10px 15px;
-  max-width: 75%;
+  max-width: 50%;
   word-wrap: break-word;
 }
 
@@ -128,23 +128,32 @@ body {
   color: var(--placeholder-color);
 }
 
+/* Send Button */
 .typing-textarea #send-button {
   flex-shrink: 0;
-  width: 55px;
-  height: 55px;
+  width: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--button-bg);
-  color: var(--icon-color);
-  border-radius: var(--button-border-radius);
+  background: linear-gradient(135deg, #6a67ce, #4a4ae6); /* Gradient background */
+  color: #ffffff; /* White icon color */
+  border-radius: 50%; /* Circular shape */
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  border: none;
+  transition: all 0.3s ease; /* Smooth transition */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15); /* Subtle shadow */
+  border: none; /* Remove border */
 }
 
 .typing-textarea #send-button:hover {
-  background: var(--button-hover-bg);
+  background: linear-gradient(135deg, #5b59c1, #3939d0); /* Slightly darker gradient on hover */
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25); /* More pronounced shadow on hover */
+  transform: scale(1.1); /* Enlarge slightly */
+}
+
+.typing-textarea #send-button:active {
+  transform: scale(0.95); /* Slightly shrink on click */
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2); /* Adjust shadow on click */
 }
 
 /* Choice Buttons */
