@@ -65,7 +65,7 @@ body {
   border: 1px solid var(--outgoing-chat-border);
   border-radius: 15px;
   padding: 10px 15px;
-  max-width: 50%;
+  max-width: 80%;
   word-wrap: break-word;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -75,7 +75,7 @@ body {
   border: 1px solid var(--incoming-chat-border);
   border-radius: 15px;
   padding: 10px 15px;
-  max-width: 50%;
+  max-width: 80%;
   word-wrap: break-word;
 }
 
