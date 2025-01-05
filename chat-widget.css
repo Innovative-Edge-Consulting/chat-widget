@@ -146,8 +146,10 @@ body {
 }
 
 .typing-textarea #send-button:hover {
-  background: linear-gradient(135deg, #5b59c1, #3939d0); /* Slightly darker gradient on hover */
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25); /* More pronounced shadow on hover */
+  background: #ffffff; /* White background on hover */
+  color: #1a1b1f; /* Button label text color */
+  border: 2px solid #1a1b1f; /* Border color set to #1a1b1f */
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25); /* Slightly enhanced shadow */
   transform: scale(1.1); /* Enlarge slightly */
 }
 
