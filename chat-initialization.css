@@ -26,7 +26,6 @@
   background: var(--search-bg-color);
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 6px var(--search-shadow-color);
   width: 100%;
   max-width: 600px;
 }
@@ -48,7 +47,7 @@
 #search-bar-wrapper .search-input {
   flex-grow: 1;
   padding: 10px 15px;
-  border: 1px solid var(--search-secondary-color);
+  border: none;
   border-radius: var(--search-border-radius) 0 0 var(--search-border-radius);
   outline: none;
   font-size: 16px;
@@ -58,7 +57,7 @@
 
 #search-bar-wrapper .search-button {
   background: none;
-  border: 1px solid var(--search-secondary-color);
+  border: none;
   padding: 10px;
   cursor: pointer;
   border-radius: 0 var(--search-border-radius) var(--search-border-radius) 0;
