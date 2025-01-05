@@ -1,4 +1,12 @@
-/* Reset styles */
+/* General Reset */
+:root {
+  --primary-color: #007bff;
+  --secondary-color: #343541;
+  --border-radius: 24px;
+  --background-color: #ffffff;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
@@ -17,13 +25,13 @@ body {
   max-width: 600px;
   margin: 0 auto;
   padding: 10px;
-  border: 1px solid #d9d9d9;
-  border-radius: 24px;
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--secondary-color);
+  border-radius: var(--border-radius);
+  background-color: var(--background-color);
+  box-shadow: 0 2px 4px var(--shadow-color);
 }
 
-/* Styles scoped to the search bar wrapper */
+/* Scoped styles */
 #search-bar-wrapper {
   display: flex;
   justify-content: center;
@@ -35,16 +43,16 @@ body {
 
 #search-bar-wrapper .ui-container {
   text-align: center;
-  background: #ffffff;
+  background: var(--background-color);
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px var(--shadow-color);
   width: 100%;
   max-width: 600px;
 }
 
 #search-bar-wrapper .ui-title {
-  color: #343541;
+  color: var(--secondary-color);
   margin-bottom: 20px;
   font-size: 24px;
 }
@@ -53,23 +61,18 @@ body {
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: 600px;
   margin: 0 auto;
-  padding: 10px;
-  border: 1px solid #d9d9d9;
-  border-radius: 24px;
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: var(--border-radius);
 }
 
 #search-bar-wrapper .search-input {
   flex-grow: 1;
   padding: 10px 15px;
   border: none;
-  border-radius: 24px 0 0 24px;
+  border-radius: var(--border-radius) 0 0 var(--border-radius);
   outline: none;
   font-size: 16px;
-  color: #343541;
+  color: var(--secondary-color);
   background-color: #f7f7f8;
 }
 
@@ -78,14 +81,16 @@ body {
   border: none;
   padding: 10px;
   cursor: pointer;
-  border-radius: 0 24px 24px 0;
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #343541;
+  color: var(--secondary-color);
   font-size: 16px;
+  transition: color 0.3s ease, background-color 0.3s ease;
 }
 
 #search-bar-wrapper .search-button:hover {
-  color: #007bff;
+  color: var(--primary-color);
+  background-color: #f1f1f1;
 }
