@@ -9,7 +9,17 @@ body {
   height: 100vh;
 }
 
-/* Main container */
+/* Main container to encapsulate the search bar and prevent overlap */
+.main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* UI container */
 .ui-container {
   text-align: center;
   background: #ffffff;
@@ -63,10 +73,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #343541;
+  font-size: 16px;
 }
 
-/* Icon styling */
-.search-button img {
-  width: 20px;
-  height: 20px;
+/* Button hover effect */
+.search-button:hover {
+  color: #007bff;
 }
