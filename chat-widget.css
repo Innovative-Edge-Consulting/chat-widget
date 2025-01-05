@@ -136,7 +136,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #6a67ce, #4a4ae6); /* Gradient background */
+  background: #1a1b1f; /* Solid background color */
   color: #ffffff; /* White icon color */
   border-radius: 50%; /* Circular shape */
   cursor: pointer;
