@@ -13,10 +13,10 @@ body {
   text-align: center;
   background: #ffffff;
   padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 0; /* No rounded corners */
+  box-shadow: none; /* Removes the shadow */
   width: 100%;
-  max-width: 400px;
+  max-width: 100%; /* Stretch container width */
 }
 
 .ui-title {
@@ -26,30 +26,31 @@ body {
 
 .input-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  width: 100%;
 }
 
 #user-input {
   flex: 1;
+  width: calc(100% - 120px); /* Adjust for padding and button width */
   padding: 10px 15px;
   font-size: 1rem;
-  border: 1px solid #d9d9d9; /* Light gray border */
+  border: none; /* Removes border */
   border-radius: 5px; /* Rounded corners */
-  margin-right: 10px; /* Space between input and button */
-  outline: none; /* Remove default focus outline */
+  outline: none; /* Removes default focus outline */
   background-color: #f7f7f8; /* Subtle background color */
   color: #343541; /* Text color */
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  box-shadow: none; /* Removes shadow */
   transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth focus effect */
 }
 
 #user-input:focus {
-  border-color: #007bff; /* Blue border on focus */
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Glow effect on focus */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Optional glow effect on focus */
 }
 
 #execute-button {
+  flex-shrink: 0;
   padding: 10px 20px;
   font-size: 1rem;
   color: #ffffff;
