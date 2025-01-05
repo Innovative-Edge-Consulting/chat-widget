@@ -10,13 +10,10 @@ body {
 }
 
 .ui-container {
-  text-align: center;
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 0; /* No rounded corners */
-  box-shadow: none; /* Removes the shadow */
   width: 100%;
-  max-width: 100%; /* Stretch container width */
+  max-width: 1200px; /* Ensure the container is wide enough */
+  padding: 20px;
+  margin: 0 auto;
 }
 
 .ui-title {
