@@ -34,7 +34,7 @@ body {
 
 #user-input {
   flex: 1;
-  width: calc(100% - 200px); /* Increased length for the input field */
+  width: calc(100% - 940px); /* Increased length for the input field */
   padding: 15px 20px; /* Comfortable padding */
   font-size: 1rem;
   border: none; /* Removes border */
