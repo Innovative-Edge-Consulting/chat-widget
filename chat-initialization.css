@@ -34,14 +34,19 @@ body {
   flex: 1;
   padding: 10px 15px;
   font-size: 1rem;
-  border: 1px solid #d9d9d9;
-  border-radius: 5px;
-  margin-right: 10px;
-  outline: none;
+  border: 1px solid #d9d9d9; /* Light gray border */
+  border-radius: 5px; /* Rounded corners */
+  margin-right: 10px; /* Space between input and button */
+  outline: none; /* Remove default focus outline */
+  background-color: #f7f7f8; /* Subtle background color */
+  color: #343541; /* Text color */
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth focus effect */
 }
 
 #user-input:focus {
-  border-color: #007bff;
+  border-color: #007bff; /* Blue border on focus */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Glow effect on focus */
 }
 
 #execute-button {
