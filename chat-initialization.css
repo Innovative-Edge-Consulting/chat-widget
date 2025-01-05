@@ -29,12 +29,13 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
+  gap: 15px; /* Adds padding between input field and button */
 }
 
 #user-input {
   flex: 1;
-  width: calc(100% - 120px); /* Adjust for padding and button width */
-  padding: 10px 15px;
+  width: calc(100% - 200px); /* Increased length for the input field */
+  padding: 15px 20px; /* Comfortable padding */
   font-size: 1rem;
   border: none; /* Removes border */
   border-radius: 5px; /* Rounded corners */
@@ -42,7 +43,7 @@ body {
   background-color: #f7f7f8; /* Subtle background color */
   color: #343541; /* Text color */
   box-shadow: none; /* Removes shadow */
-  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth focus effect */
+  transition: box-shadow 0.3s ease; /* Smooth focus effect */
 }
 
 #user-input:focus {
@@ -51,7 +52,7 @@ body {
 
 #execute-button {
   flex-shrink: 0;
-  padding: 10px 20px;
+  padding: 15px 25px; /* Larger padding for a better button size */
   font-size: 1rem;
   color: #ffffff;
   background: #007bff;
