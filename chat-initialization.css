@@ -1,51 +1,38 @@
-/* Reset styles and scoped container */
+/* Scoped styles for chat-initialization widget */
 :root {
-  --primary-color: #007bff;
-  --secondary-color: #343541;
-  --border-radius: 24px;
-  --background-color: #ffffff;
-  --shadow-color: rgba(0, 0, 0, 0.1);
+  --search-primary-color: #007bff;
+  --search-secondary-color: #343541;
+  --search-border-radius: 24px;
+  --search-bg-color: #ffffff;
+  --search-shadow-color: rgba(0, 0, 0, 0.1);
 }
 
-body {
-  margin: 0;
-  font-family: "Poppins", sans-serif;
-  background-color: #f7f7f8;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-/* Scoped container for the widget */
 #search-bar-wrapper {
   position: relative;
-  z-index: 9999; /* Ensures it's on top of other elements */
+  z-index: 1000;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 10px;
   box-sizing: border-box;
-  background: transparent; /* Ensure it doesn't interfere visually */
 }
 
-/* Inner container for isolation */
 #search-bar-wrapper .ui-container {
   position: relative;
-  z-index: 10;
   text-align: center;
-  background: var(--background-color);
+  background: var(--search-bg-color);
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 6px var(--shadow-color);
+  box-shadow: 0 4px 6px var(--search-shadow-color);
   width: 100%;
   max-width: 600px;
-  isolation: isolate; /* Prevent overlapping styles from affecting it */
 }
 
 #search-bar-wrapper .ui-title {
-  color: var(--secondary-color);
+  color: var(--search-secondary-color);
   margin-bottom: 20px;
   font-size: 24px;
 }
@@ -55,41 +42,35 @@ body {
   align-items: center;
   width: 100%;
   margin: 0 auto;
-  border-radius: var(--border-radius);
+  border-radius: var(--search-border-radius);
 }
 
 #search-bar-wrapper .search-input {
   flex-grow: 1;
   padding: 10px 15px;
-  border: none;
-  border-radius: var(--border-radius) 0 0 var(--border-radius);
+  border: 1px solid var(--search-secondary-color);
+  border-radius: var(--search-border-radius) 0 0 var(--search-border-radius);
   outline: none;
   font-size: 16px;
-  color: var(--secondary-color);
+  color: var(--search-secondary-color);
   background-color: #f7f7f8;
 }
 
 #search-bar-wrapper .search-button {
   background: none;
-  border: none;
+  border: 1px solid var(--search-secondary-color);
   padding: 10px;
   cursor: pointer;
-  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  border-radius: 0 var(--search-border-radius) var(--search-border-radius) 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--secondary-color);
+  color: var(--search-secondary-color);
   font-size: 16px;
   transition: color 0.3s ease, background-color 0.3s ease;
 }
 
 #search-bar-wrapper .search-button:hover {
-  color: var(--primary-color);
+  color: var(--search-primary-color);
   background-color: #f1f1f1;
 }
-
-/* Ensure widget does not affect global layout */
-* {
-  box-sizing: border-box;
-}
-
