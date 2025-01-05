@@ -171,18 +171,4 @@ class ChatWidget {
   }
 }
 
-// Initialization
-(function () {
-  const config = {
-    apiKey: "YOUR_API_KEY_HERE", // Replace with your Voiceflow API Key
-    versionID: "YOUR_VERSION_ID_HERE", // Replace with your Voiceflow Version ID
-    containerID: "chat-container", // ID of the container for embedding the widget
-  };
-
-  const chatWidget = new ChatWidget(config);
-
-  // Test initial interaction
-  chatWidget.interact({ type: "launch" }).catch((error) => {
-    console.error("Initialization failed:", error);
-  });
-})();
+// Removed redundant initialization here
