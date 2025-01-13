@@ -1,4 +1,5 @@
-// Chat Widget Initialization
+// Revised SIBO-Widget.js
+
 class ChatWidget {
   constructor(config) {
     const { apiKey, versionID, containerID } = config;
@@ -76,7 +77,7 @@ class ChatWidget {
 
   async interact(request) {
     try {
-      console.log("Sending request:", request); // Debug log
+      console.log("Sending request:", request);
       const response = await fetch(
         `https://general-runtime.voiceflow.com/state/user/${this.userId}/interact`,
         {
@@ -96,7 +97,7 @@ class ChatWidget {
       }
 
       const traces = await response.json();
-      console.log("Received traces:", traces); // Debug log
+      console.log("Received traces:", traces);
       if (traces && traces.length > 0) {
         this.handleTraces(traces);
       } else {
@@ -113,6 +114,8 @@ class ChatWidget {
         this.createBubble(trace.payload.message, "incoming");
       } else if (trace.type === "choice") {
         this.createChoiceButtons(trace.payload.buttons);
+      } else if (trace.type === "carousel") {
+        this.createCarousel(trace.payload.cards);
       } else {
         console.log("Unhandled trace type:", trace);
       }
@@ -161,6 +164,81 @@ class ChatWidget {
     this.chatWindow.scrollTop = this.chatWindow.scrollHeight;
   }
 
+createCarousel(cards) {
+  const carouselContainer = document.createElement("div");
+  carouselContainer.classList.add("carousel-container");
+
+  cards.forEach((card) => {
+    const cardWrapper = document.createElement("div");
+    cardWrapper.classList.add("carousel-wrapper"); // Wrapper for card and button
+
+    const cardElement = document.createElement("div");
+    cardElement.classList.add("carousel-card");
+
+    // Add Image
+    if (card.image) {
+      const cardImage = document.createElement("img");
+      cardImage.src = card.image;
+      cardImage.alt = card.title || "Carousel Image";
+      cardElement.appendChild(cardImage);
+    }
+
+    // Add Title
+    if (card.title) {
+      const cardTitle = document.createElement("h5");
+      cardTitle.textContent = card.title;
+      cardElement.appendChild(cardTitle);
+    }
+
+    // Add Description
+    if (card.description) {
+      const cardDescription = document.createElement("p");
+      cardDescription.textContent = this.extractTextFromSlate(card.description);
+      cardElement.appendChild(cardDescription);
+    }
+
+    cardWrapper.appendChild(cardElement);
+
+    // Add Button
+    if (card.buttons && card.buttons.length > 0) {
+      card.buttons.forEach((button) => {
+        const buttonLabel = button.name;
+        const buttonURL = button.request?.payload?.actions?.[0]?.payload?.url;
+
+        if (buttonLabel && buttonURL) {
+          const cardButton = document.createElement("a");
+          cardButton.textContent = buttonLabel;
+          cardButton.href = buttonURL;
+          cardButton.target = "_blank"; // Open link in a new tab
+          cardButton.classList.add("carousel-button");
+          cardWrapper.appendChild(cardButton); // Append button outside the card
+        } else {
+          console.warn("Invalid button data:", button);
+        }
+      });
+    }
+
+    carouselContainer.appendChild(cardWrapper);
+  });
+
+  this.chatWindow.appendChild(carouselContainer);
+}
+
+
+  extractTextFromSlate(description) {
+    if (typeof description === "string") {
+      return description;
+    }
+
+    if (description.slate) {
+      return description.slate
+        .flatMap((node) => (node.children || []).map((child) => child.text || ""))
+        .join(" ");
+    }
+
+    return "";
+  }
+
   async handleTextInput() {
     const userInput = this.userInput.value.trim();
     if (!userInput) return;
@@ -170,5 +248,3 @@ class ChatWidget {
     await this.interact({ type: "text", payload: userInput });
   }
 }
-
-// Removed redundant initialization here
